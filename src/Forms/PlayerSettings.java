@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Utils.Helper;
+
 /**
  * @author Riyufuchi
  */
@@ -45,7 +47,7 @@ public class PlayerSettings extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
-            contentPane.add(label[i], setGBC(0, i + 1));
+            contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
     	}
     }
     
@@ -65,9 +67,9 @@ public class PlayerSettings extends JFrame
         	buttons[i].setForeground(new Color(0,0,0));
         	buttons[i].setText(buttonsTexts[i]);
         }
-        contentPane.add(buttons[0], setGBC(1, 2));
-        contentPane.add(buttons[1], setGBC(0, 3));
-        contentPane.add(buttons[2], setGBC(1, 3));
+        contentPane.add(buttons[0], Helper.setGBC(1, 2, gbc));
+        contentPane.add(buttons[1], Helper.setGBC(0, 3, gbc));
+        contentPane.add(buttons[2], Helper.setGBC(1, 3, gbc));
     }
     
      private void vytvorUdalosti()
@@ -93,12 +95,5 @@ public class PlayerSettings extends JFrame
             	
             }
         });
-    }
-        
-    private GridBagConstraints setGBC(int x, int y)
-    {
-        gbc.gridx = x;
-        gbc.gridy = y;
-        return gbc;
     }
 }

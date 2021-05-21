@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Utils.Helper;
+
 /**
  * @author Riyufuchi
  */
@@ -48,7 +50,7 @@ public class Settings extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
-            contentPane.add(label[i], setGBC(0, i + 1));
+            contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
     	}
     }
     
@@ -86,11 +88,11 @@ public class Settings extends JFrame
         comboBox.addItem(32);
         comboBox.setSelectedIndex(1);
         //Pridani na form
-        contentPane.add(comboBox, setGBC(1, 1));
-        contentPane.add(name1, setGBC(1, 2));
-        contentPane.add(name2, setGBC(1, 3));
-        contentPane.add(buttons[0], setGBC(0, 4));
-        contentPane.add(buttons[1], setGBC(1, 4));
+        contentPane.add(comboBox, Helper.setGBC(1, 1, gbc));
+        contentPane.add(name1, Helper.setGBC(1, 2, gbc));
+        contentPane.add(name2, Helper.setGBC(1, 3, gbc));
+        contentPane.add(buttons[0], Helper.setGBC(0, 4, gbc));
+        contentPane.add(buttons[1], Helper.setGBC(1, 4, gbc));
     }
     
      private void vytvorUdalosti()
@@ -123,11 +125,5 @@ public class Settings extends JFrame
         }
         new GameField((int)comboBox.getSelectedItem(), name1.getText(), name1.getText());
         this.dispose();
-    }
-    private GridBagConstraints setGBC(int x, int y)
-    {
-        gbc.gridx = x;
-        gbc.gridy = y;
-        return gbc;
     }
 }

@@ -12,6 +12,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import Utils.Player;
+import Utils.Helper;
 import Utils.JMenuAutoCreator;
 
 public class GameField extends JFrame
@@ -22,16 +23,17 @@ public class GameField extends JFrame
 	private GridBagConstraints gbc;
 	private JMenuAutoCreator mac;
 	private int size;
+	private int winRow = 4;
 	private boolean playX;
 	private Player playerX;
 	private Player playerO;
   
 	public GameField(int size, String hrac1, String hrac2) 
 	{
-		setTitle("TicTacToe");
-		setDefaultCloseOperation(3);
-		setLocationRelativeTo(null);
-		setResizable(false);
+		this.setTitle("TicTacToe");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		this.size = size;
 		this.playerX = new Player(hrac1, Color.BLUE);
 		this.playerO = new Player(hrac2, Color.RED);
@@ -45,12 +47,12 @@ public class GameField extends JFrame
 		this.setVisible(true);
 	}
 	
-	public GameField(int size, Player player1, Player player2) 
+	public GameField(int size, Player player1, Player player2, int x, int y) 
 	{
-		setTitle("Hraci plocha");
-		setDefaultCloseOperation(3);
-		setLocationRelativeTo(null);
-		setResizable(false);
+		this.setTitle("TicTacToe");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
 		this.size = size;
 		this.playerX = player1;
 		this.playerO = player2;
@@ -59,7 +61,7 @@ public class GameField extends JFrame
 		generateMenu();
 		setAction();
 		this.add(this.contentPane);
-		this.setLocation(new Point(180, 80));
+		this.setLocation(new Point(x, y));
 		this.pack();
 		this.setVisible(true);
 	}
@@ -82,7 +84,7 @@ public class GameField extends JFrame
 				gameField[y][x].setText(String.valueOf(x));
 				gameField[y][x].setName(String.valueOf(y));
 				gameField[y][x].setPreferredSize(new Dimension(50, 50));
-				contentPane.add(gameField[y][x], getGBC(x, y));
+				contentPane.add(gameField[y][x], Helper.setGBC(x, y, gbc));
 			} 
 		} 
 	}
@@ -139,7 +141,7 @@ public class GameField extends JFrame
   
 	private void reset() 
 	{
-		new GameField(size, playerX, playerO);
+		new GameField(size, playerX, playerO, this.getX(), this.getY());
 		this.dispose();
 	}
   
@@ -178,46 +180,100 @@ public class GameField extends JFrame
   
 	private void checkForWinner(int x1, int y1, String team) 
 	{
-		int p = 0;
+		int px = 0; 
+		int py = 0;
+		int prd = 0; // points right down
+		int pru = 0; //points right up
+		int step = 0;
 		for(int i = 0; i < size; i++) 
 		{
 			for(int l = 0; l < size; l++) 
 			{
+				//X
 				if (gameField[i][l].getText().equals(team)) 
 				{
-					if (p >= 4)
+					if (px >= winRow)
 					{  
 						endGame(team); 
 					}
-					p++;
+					px++;
 				} 
 				else 
 				{
-					p = 0;
-				} 
-			} 
-		} 
-		p = 0;
-		for (int i = 0; i < size; i++) 
-		{
-			for (int l = 0; l < size; l++)
-			{
+					px = 0;
+				}
+				//Y
 				if (gameField[l][i].getText().equals(team)) 
 				{
-					if (p >= 4)
+					if (py >= winRow)
 					{
 						endGame(team); 
 					}
-					p++;  
+					py++;  
 				} 
 				else 
 				{
-					p = 0;
+					py = 0;
 				} 
+				//Diagonal 
+				while(true)
+				{	
+					//Right down
+					if((i + step < size)&&(l + step < size))
+					{
+						if (gameField[i + step][l + step].getText().equals(team)) 
+						{
+							if (prd >= winRow)
+							{
+								endGame(team); 
+							}
+							prd++;  
+						} 
+						else 
+						{
+							prd = 0;
+						}
+					}
+					else
+					{
+						prd = 0;
+						step = 0;
+						break;
+					}
+					step++;
+				}
+				//Right up
+				step = 0;
+				while(true)
+				{
+					if((i + step < size)&&(l - step > 0))
+					{
+						if (gameField[i + step][l - step].getText().equals(team)) 
+						{
+							
+							if (pru >= winRow)
+							{
+								endGame(team); 
+							}
+							pru++;  
+						} 
+						else 
+						{
+							pru = 0;
+						}
+					}
+					else
+					{
+						pru = 0;
+						step = 0;
+						break;
+					}
+					step++;
+				}
 			} 
 		} 
 	}
-
+	
 	private void endGame(String team) 
 	{
 		for (int y = 0; y < size; y++)
@@ -252,12 +308,5 @@ public class GameField extends JFrame
 				}); 
 			}
 		} 
-	}
-  
-	private GridBagConstraints getGBC(int x, int y) 
-	{
-		gbc.gridx = x;
-		gbc.gridy = y;
-		return this.gbc;
 	}
 }
