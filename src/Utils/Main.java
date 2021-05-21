@@ -1,6 +1,6 @@
 package Utils;
 
-import Forms.Nastaveni;
+import Forms.Settings;
 
 /**
  * @author Riyufuchi
@@ -12,6 +12,6 @@ public class Main
      */
     public static void main(String[] args) 
     {
-        new Nastaveni();
+        new Settings();
     } 
 }

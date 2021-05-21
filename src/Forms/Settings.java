@@ -15,21 +15,21 @@ import javax.swing.JTextField;
 /**
  * @author Riyufuchi
  */
-public class Nastaveni extends JFrame
+public class Settings extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	private JButton[] tlacitka;
+	private JButton[] buttons;
     private JPanel contentPane;
     private JLabel[] label;
-    private JTextField jmeno1, jmeno2;
+    private JTextField name1, name2;
     private JComboBox<Integer> comboBox;
-    private final String[] labelTexts = {"Velikost hraci plochy:", "Jmeno hrace 1:", "Jmeno hrace 2:"};
-    private final String[] tlacitkaTexts = {"Zrusit", "Hrat"};
+    private final String[] labelTexts = {"Field size:", "Player1 name:", "Player2 name:"};
+    private final String[] buttonsTexts = {"Cancel", "Start"};
     private GridBagConstraints gbc;
     
-    public Nastaveni()
+    public Settings()
     {
-        this.setTitle("Piskvorky - Nastaveni");
+        this.setTitle("TicTacToe - Settings");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -48,7 +48,7 @@ public class Nastaveni extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
-                contentPane.add(label[i], nastavGBC(0, i + 1));
+            contentPane.add(label[i], setGBC(0, i + 1));
     	}
     }
     
@@ -60,18 +60,18 @@ public class Nastaveni extends JFrame
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         //TextField
-        jmeno1 = new JTextField();
-        jmeno1.setText("X");
-        jmeno2 = new JTextField();
-        jmeno2.setText("O");
+        name1 = new JTextField();
+        name1.setText("X");
+        name2 = new JTextField();
+        name2.setText("O");
         //Tlacitka
-        tlacitka = new JButton[tlacitkaTexts.length];
-        for(int i = 0; i < tlacitka.length; i++)
+        buttons = new JButton[buttonsTexts.length];
+        for(int i = 0; i < buttons.length; i++)
         {
-            tlacitka[i] = new JButton();
-            tlacitka[i].setBackground(new Color(214,217,223));
-            tlacitka[i].setForeground(new Color(0,0,0));
-            tlacitka[i].setText(tlacitkaTexts[i]);
+            buttons[i] = new JButton();
+            buttons[i].setBackground(new Color(214,217,223));
+            buttons[i].setForeground(new Color(0,0,0));
+            buttons[i].setText(buttonsTexts[i]);
         }
         //Combobox
         comboBox = new JComboBox<Integer>();
@@ -86,23 +86,23 @@ public class Nastaveni extends JFrame
         comboBox.addItem(32);
         comboBox.setSelectedIndex(1);
         //Pridani na form
-        contentPane.add(comboBox, nastavGBC(1, 1));
-        contentPane.add(jmeno1, nastavGBC(1, 2));
-        contentPane.add(jmeno2, nastavGBC(1, 3));
-        contentPane.add(tlacitka[0], nastavGBC(0, 4));
-        contentPane.add(tlacitka[1], nastavGBC(1, 4));
+        contentPane.add(comboBox, setGBC(1, 1));
+        contentPane.add(name1, setGBC(1, 2));
+        contentPane.add(name2, setGBC(1, 3));
+        contentPane.add(buttons[0], setGBC(0, 4));
+        contentPane.add(buttons[1], setGBC(1, 4));
     }
     
      private void vytvorUdalosti()
     {
-        tlacitka[0].addActionListener(new ActionListener() 
+    	 buttons[0].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {
             	System.exit(0);
             }
         });
-        tlacitka[1].addActionListener(new ActionListener() 
+    	 buttons[1].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {
@@ -113,18 +113,18 @@ public class Nastaveni extends JFrame
         
     private void zapnoutHru()
     {
-        if(jmeno1.getText().equals(""))
+        if(name1.getText().equals(""))
         {
-            jmeno1.setText("X");
+            name1.setText("X");
         }
-        if(jmeno2.getText().equals(""))
+        if(name2.getText().equals(""))
         {
-            jmeno2.setText("O");
+            name2.setText("O");
         }
-        new HraciPlocha((int)comboBox.getSelectedItem(), jmeno1.getText(), jmeno2.getText());
+        new GameField((int)comboBox.getSelectedItem(), name1.getText(), name1.getText());
         this.dispose();
     }
-    private GridBagConstraints nastavGBC(int x, int y)
+    private GridBagConstraints setGBC(int x, int y)
     {
         gbc.gridx = x;
         gbc.gridy = y;

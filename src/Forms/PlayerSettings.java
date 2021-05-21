@@ -13,18 +13,18 @@ import javax.swing.JPanel;
 /**
  * @author Riyufuchi
  */
-public class NastavHrace extends JFrame
+public class PlayerSettings extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	private JButton[] tlacitka;
+	private JButton[] buttons;
     private JPanel contentPane;
     private JLabel[] label;
    
     private final String[] labelTexts = {"Jmeno:", "Barva:"};
-    private final String[] tlacitkaTexts = {"Barva", "Zrusit", "Ulozit"};
+    private final String[] buttonsTexts = {"Barva", "Zrusit", "Ulozit"};
     private GridBagConstraints gbc;
     
-    public NastavHrace()
+    public PlayerSettings()
     {
         this.setTitle("Nastaveni hrace");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -45,7 +45,7 @@ public class NastavHrace extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
-            contentPane.add(label[i], nastavGBC(0, i + 1));
+            contentPane.add(label[i], setGBC(0, i + 1));
     	}
     }
     
@@ -57,36 +57,36 @@ public class NastavHrace extends JFrame
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         //Tlacitka
-        tlacitka = new JButton[tlacitkaTexts.length];
-        for(int i = 0; i < tlacitka.length; i++)
+        buttons = new JButton[buttonsTexts.length];
+        for(int i = 0; i < buttons.length; i++)
         {
-        	tlacitka[i] = new JButton();
-            tlacitka[i].setBackground(new Color(214,217,223));
-            tlacitka[i].setForeground(new Color(0,0,0));
-            tlacitka[i].setText(tlacitkaTexts[i]);
+        	buttons[i] = new JButton();
+        	buttons[i].setBackground(new Color(214,217,223));
+        	buttons[i].setForeground(new Color(0,0,0));
+        	buttons[i].setText(buttonsTexts[i]);
         }
-        contentPane.add(tlacitka[0], nastavGBC(1, 2));
-        contentPane.add(tlacitka[1], nastavGBC(0, 3));
-        contentPane.add(tlacitka[2], nastavGBC(1, 3));
+        contentPane.add(buttons[0], setGBC(1, 2));
+        contentPane.add(buttons[1], setGBC(0, 3));
+        contentPane.add(buttons[2], setGBC(1, 3));
     }
     
      private void vytvorUdalosti()
     {
-    	tlacitka[0].addActionListener(new ActionListener() 
+    	 buttons[0].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {
             	
             }
         });
-    	tlacitka[1].addActionListener(new ActionListener() 
+    	 buttons[1].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {
             	System.exit(0);
             }
         });
-        tlacitka[1].addActionListener(new ActionListener() 
+    	 buttons[1].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {
@@ -95,7 +95,7 @@ public class NastavHrace extends JFrame
         });
     }
         
-    private GridBagConstraints nastavGBC(int x, int y)
+    private GridBagConstraints setGBC(int x, int y)
     {
         gbc.gridx = x;
         gbc.gridy = y;
