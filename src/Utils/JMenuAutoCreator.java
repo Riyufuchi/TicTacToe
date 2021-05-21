@@ -4,14 +4,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-/*
+/**
  * Copyright Header
  * 
  * Projetct: ODB Manager
  * Created On: 21.07.2020
  * Last Edit: 21.07.2020
- * Created By: Riyufuchi
- * 
+ * @author Riyufuchi
  */
 
 public class JMenuAutoCreator 

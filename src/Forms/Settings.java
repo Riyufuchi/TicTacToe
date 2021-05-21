@@ -56,7 +56,7 @@ public class Settings extends JFrame
     
     private void nastavitUI()
     {
-        contentPane = new JPanel(null);
+        contentPane = new JPanel();
         contentPane.setBackground(new Color(192,192,192));
         contentPane.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();

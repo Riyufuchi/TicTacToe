@@ -21,14 +21,13 @@ public class PlayerSettings extends JFrame
 	private JButton[] buttons;
     private JPanel contentPane;
     private JLabel[] label;
-   
-    private final String[] labelTexts = {"Jmeno:", "Barva:"};
-    private final String[] buttonsTexts = {"Barva", "Zrusit", "Ulozit"};
+    private final String[] labelTexts = {"Name:", "Color:"};
+    private final String[] buttonsTexts = {"Color", "Cancel", "Save"};
     private GridBagConstraints gbc;
     
     public PlayerSettings()
     {
-        this.setTitle("Nastaveni hrace");
+        this.setTitle("Player settings");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -53,7 +52,7 @@ public class PlayerSettings extends JFrame
     
     private void nastavitUI()
     {
-        contentPane = new JPanel(null);
+        contentPane = new JPanel();
         contentPane.setBackground(new Color(192,192,192));
         contentPane.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -88,7 +87,7 @@ public class PlayerSettings extends JFrame
             	System.exit(0);
             }
         });
-    	 buttons[1].addActionListener(new ActionListener() 
+    	 buttons[2].addActionListener(new ActionListener() 
         {
             public void actionPerformed(ActionEvent evt) 
             {

@@ -15,6 +15,10 @@ import Utils.Player;
 import Utils.Helper;
 import Utils.JMenuAutoCreator;
 
+/**
+ * 
+ * @author Riyufuchi
+ */
 public class GameField extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -28,15 +32,15 @@ public class GameField extends JFrame
 	private Player playerX;
 	private Player playerO;
   
-	public GameField(int size, String hrac1, String hrac2) 
+	public GameField(int size, String name1, String name2) 
 	{
 		this.setTitle("TicTacToe");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.size = size;
-		this.playerX = new Player(hrac1, Color.BLUE);
-		this.playerO = new Player(hrac2, Color.RED);
+		this.playerX = new Player(name1, Color.BLUE);
+		this.playerO = new Player(name2, Color.RED);
 		this.playX = true;
 		setField();
 		generateMenu();
@@ -68,7 +72,7 @@ public class GameField extends JFrame
 	
 	private void setField() 
 	{
-		contentPane = new JPanel(null);
+		contentPane = new JPanel();
 		contentPane.setBackground(new Color(192, 192, 192));
 		contentPane.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
