@@ -18,6 +18,7 @@ import Utils.JMenuAutoCreator;
 /**
  * 
  * @author Riyufuchi
+ * @version alfa
  */
 public class GameField extends JFrame
 {
@@ -96,7 +97,7 @@ public class GameField extends JFrame
 	public void generateMenu() 
 	{
 		String[] menu = { "App", "Options" };
-		String[] menuItems = { "About", "Restart", "Exit", "", "Set player X", "Set player O" };
+		String[] menuItems = { "Resize", "Restart", "Exit", "", "Set player X", "Set player O", "About"};
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
@@ -138,6 +139,15 @@ public class GameField extends JFrame
 					}
 				}); 
 				break;
+			case "Resize": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						resize();
+					}
+				}); 
+				break;
 			} 
 		} 
 		this.setJMenuBar(mac.getJMenuBar());
@@ -146,6 +156,12 @@ public class GameField extends JFrame
 	private void reset() 
 	{
 		new GameField(size, playerX, playerO, this.getX(), this.getY());
+		this.dispose();
+	}
+	
+	private void resize() 
+	{
+		new Settings();
 		this.dispose();
 	}
   
@@ -166,7 +182,7 @@ public class GameField extends JFrame
 			if(!gameField[x][y].getText().equals("Y")) 
 			{
 				gameField[x][y].setText("X");
-				gameField[x][y].setName("ZABRANO");
+				gameField[x][y].setName("OCCUPIED");
 				gameField[x][y].setForeground(playerX.getColor());
 				checkForWinner(x, y, "X");
 				playX = false;
@@ -175,7 +191,7 @@ public class GameField extends JFrame
 		else if (!gameField[x][y].getText().equals("X")) 
 		{
 			gameField[x][y].setText("O");
-			gameField[x][y].setName("ZABRANO");
+			gameField[x][y].setName("OCCUPIED");
 			gameField[x][y].setForeground(playerO.getColor());
 			checkForWinner(x, y, "O");
 			playX = true;
@@ -219,58 +235,38 @@ public class GameField extends JFrame
 				{
 					py = 0;
 				} 
-				//Diagonal 
-				while(true)
-				{	
-					//Right down
-					if((i + step < size)&&(l + step < size))
+				//Diagonal - Right down
+				while((i + step < size)&&(l + step < size))
+				{
+					if (gameField[i + step][l + step].getText().equals(team)) 
 					{
-						if (gameField[i + step][l + step].getText().equals(team)) 
+						if (prd >= winRow)
 						{
-							if (prd >= winRow)
-							{
-								endGame(team); 
-							}
-							prd++;  
-						} 
-						else 
-						{
-							prd = 0;
+							endGame(team); 
 						}
-					}
-					else
+						prd++;  
+					} 
+					else 
 					{
 						prd = 0;
-						step = 0;
-						break;
 					}
 					step++;
 				}
-				//Right up
 				step = 0;
-				while(true)
+				//Right up
+				while((i + step < size)&&(l - step > 0))
 				{
-					if((i + step < size)&&(l - step > 0))
+					if (gameField[i + step][l - step].getText().equals(team)) 
 					{
-						if (gameField[i + step][l - step].getText().equals(team)) 
+						if (pru >= winRow)
 						{
-							
-							if (pru >= winRow)
-							{
-								endGame(team); 
-							}
-							pru++;  
-						} 
-						else 
-						{
-							pru = 0;
+							endGame(team); 
 						}
-					}
-					else
+						pru++;  
+					} 
+					else 
 					{
 						pru = 0;
-						step = 0;
-						break;
 					}
 					step++;
 				}
@@ -304,7 +300,7 @@ public class GameField extends JFrame
 					public void actionPerformed(ActionEvent e) 
 					{
 						JButton b = (JButton)e.getSource();
-						if(!(b.getName().equals("ZABRANO")))
+						if(!(b.getName().equals("OCCUPIED")))
 						{
 							capturePoint(b.getName(), Integer.valueOf(b.getText()), Integer.valueOf(b.getName()));
 						}
