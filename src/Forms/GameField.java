@@ -16,9 +16,9 @@ import Utils.Helper;
 import Utils.JMenuAutoCreator;
 
 /**
- * 
  * @author Riyufuchi
  * @version alfa
+ * @since 1.0
  */
 public class GameField extends JFrame
 {
@@ -94,7 +94,7 @@ public class GameField extends JFrame
 		} 
 	}
   
-	public void generateMenu() 
+	private void generateMenu() 
 	{
 		String[] menu = { "App", "Options" };
 		String[] menuItems = { "Resize", "Restart", "Exit", "", "Set player X", "Set player O", "About"};
@@ -179,12 +179,12 @@ public class GameField extends JFrame
 	{
 		if(playX) 
 		{
-			if(!gameField[x][y].getText().equals("Y")) 
+			if(!gameField[x][y].getText().equals("O")) 
 			{
 				gameField[x][y].setText("X");
 				gameField[x][y].setName("OCCUPIED");
 				gameField[x][y].setForeground(playerX.getColor());
-				checkForWinner(x, y, "X");
+				checkForWinner("X");
 				playX = false;
 			} 
 		} 
@@ -193,12 +193,16 @@ public class GameField extends JFrame
 			gameField[x][y].setText("O");
 			gameField[x][y].setName("OCCUPIED");
 			gameField[x][y].setForeground(playerO.getColor());
-			checkForWinner(x, y, "O");
+			checkForWinner("O");
 			playX = true;
 		} 
 	}
   
-	private void checkForWinner(int x1, int y1, String team) 
+	/**
+	 * This method check if there is five(depends on winRow variable) X's or O's in row and declare winner
+	 * @param team (X or O) declares who is being checked  
+	 */
+	private void checkForWinner(String team) 
 	{
 		int px = 0; 
 		int py = 0;
@@ -254,9 +258,9 @@ public class GameField extends JFrame
 				}
 				step = 0;
 				//Right up
-				while((i + step < size)&&(l - step > 0))
+				while((i - step > size)&&(l - step > 0))
 				{
-					if (gameField[i + step][l - step].getText().equals(team)) 
+					if (gameField[i - step][l - step].getText().equals(team)) 
 					{
 						if (pru >= winRow)
 						{
@@ -270,6 +274,8 @@ public class GameField extends JFrame
 					}
 					step++;
 				}
+				pru = 0;
+				prd = 0;
 			} 
 		} 
 	}
