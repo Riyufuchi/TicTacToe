@@ -27,11 +27,11 @@ public class PlayerSettings extends JFrame
     
     public PlayerSettings()
     {
-        this.setTitle("Player settings");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setResizable(false);
-        nastavitUI();
+    	this.setTitle("Player settings");
+    	this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    	this.setLocationRelativeTo(null);
+    	this.setResizable(false);
+    	nastavitUI();
         vytvorLabely();
         vytvorUdalosti();
         this.add(contentPane);

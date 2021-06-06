@@ -26,7 +26,7 @@ public class Settings extends JFrame
     private JTextField name1, name2;
     private JComboBox<Integer> comboBox;
     private final String[] labelTexts = {"Field size:", "Player1 name:", "Player2 name:"};
-    private final String[] buttonsTexts = {"Cancel", "Start"};
+    private final String[] buttonsTexts = {"Cancel", "Start game"};
     private GridBagConstraints gbc;
     
     public Settings()

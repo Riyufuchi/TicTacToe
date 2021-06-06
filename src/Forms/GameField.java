@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
@@ -17,7 +18,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version alfa
+ * @version 1.3
  * @since 1.0
  */
 public class GameField extends JFrame
@@ -27,12 +28,10 @@ public class GameField extends JFrame
 	private JPanel contentPane;
 	private GridBagConstraints gbc;
 	private JMenuAutoCreator mac;
-	private int size;
-	private int winRow = 4;
+	private int size, winRow = 4;
 	private boolean playX;
-	private Player playerX;
-	private Player playerO;
-  
+	private Player playerX, playerO;
+	
 	public GameField(int size, String name1, String name2) 
 	{
 		this.setTitle("TicTacToe");
@@ -79,24 +78,25 @@ public class GameField extends JFrame
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gameField = new JButton[size][size];
+		Color c = new Color(214, 217, 223);
 		for (int y = 0; y < size; y++) 
 		{
 			for (int x = 0; x < size; x++) 
 			{
 				gameField[y][x] = new JButton();
-				gameField[y][x].setBackground(new Color(214, 217, 223));
-				gameField[y][x].setForeground(new Color(214, 217, 223));
+				gameField[y][x].setBackground(c);
+				gameField[y][x].setForeground(c);
 				gameField[y][x].setText(String.valueOf(x));
 				gameField[y][x].setName(String.valueOf(y));
 				gameField[y][x].setPreferredSize(new Dimension(50, 50));
 				contentPane.add(gameField[y][x], Helper.setGBC(x, y, gbc));
 			} 
-		} 
+		}
 	}
-  
+	
 	private void generateMenu() 
 	{
-		String[] menu = { "App", "Options" };
+		String[] menu = { "App", "Options"};
 		String[] menuItems = { "Resize", "Restart", "Exit", "", "Set player X", "Set player O", "About"};
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
@@ -175,7 +175,7 @@ public class GameField extends JFrame
 		this.playerX.setColor(JColorChooser.showDialog(this, "Choose color for player " + playerX.getName(), playerX.getColor()));
 	}
 	
-	private void capturePoint(String point, int y, int x) 
+	private void capturePoint(int y, int x) 
 	{
 		if(playX) 
 		{
@@ -308,7 +308,7 @@ public class GameField extends JFrame
 						JButton b = (JButton)e.getSource();
 						if(!(b.getName().equals("OCCUPIED")))
 						{
-							capturePoint(b.getName(), Integer.valueOf(b.getText()), Integer.valueOf(b.getName()));
+							capturePoint(Integer.valueOf(b.getText()), Integer.valueOf(b.getName()));
 						}
 					}
 				}); 

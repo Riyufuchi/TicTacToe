@@ -32,13 +32,8 @@ public class JMenuAutoCreator
 		int value = 0;
 		int i = 0;
 		int i2 = 0;
-		while(true)
+		while(i < menuItemLabels.length)
 		{
-			if(i >= menuItemLabels.length)
-			{
-				index[i2] = value;
-				break;
-			}
 			if(!(menuItemLabels[i].equals("")))
 			{
 				value++;
@@ -52,6 +47,7 @@ public class JMenuAutoCreator
 				i2++;
 			}
 		}
+		index[i2] = value;
 		return index;
 	}
 	
