@@ -18,7 +18,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3.1
+ * @version 1.3.2
  * @since 1.0
  */
 public class GameField extends JFrame
@@ -29,9 +29,21 @@ public class GameField extends JFrame
 	private GridBagConstraints gbc;
 	private JMenuAutoCreator mac;
 	private int size, points, x, y, stepX, capped, winRow = 4;
-	private String team;
 	private boolean playX;
 	private Player playerX, playerO;
+	private enum ENDGAME
+	{
+		DRAW(""),
+		X_WON("X"),
+		O_WON("O");
+		
+		public String teamSymbol;
+		
+		ENDGAME(String team)
+		{
+			this.teamSymbol = team;
+		}
+	}
 	
 	public GameField(int size, String name1, String name2) 
 	{
@@ -187,8 +199,7 @@ public class GameField extends JFrame
 				capped++;
 				this.x = x;
 				this.y = y;
-				this.team = "X";
-				checkForWinner();
+				checkForWinner(ENDGAME.X_WON);
 				playX = false;
 			} 
 		} 
@@ -197,11 +208,10 @@ public class GameField extends JFrame
 			gameField[x][y].setText("O");
 			gameField[x][y].setName("OCCUPIED");
 			gameField[x][y].setForeground(playerO.getColor());
+			capped++;
 			this.x = x;
 			this.y = y;
-			this.team = "O";
-			capped++;
-			checkForWinner();
+			checkForWinner(ENDGAME.O_WON);
 			playX = true;
 		} 
 	}
@@ -210,28 +220,28 @@ public class GameField extends JFrame
 	 * This method check if there is five(depends on winRow variable) X's or O's in row and declare winner
 	 * @param team (X or O) declares who is being checked  
 	 */
-	private void checkForWinner() 
+	private void checkForWinner(ENDGAME team) 
 	{
-		if(checkHorizontal())
+		if(checkHorizontal(team))
 		{
-			if(checkVertical())
+			if(checkVertical(team))
 			{
 				if(capped == size * size)
 				{
-					//System.out.println("draw");
+					endGame(ENDGAME.DRAW);
 				}
 			}
 		}
 	}
 	
-	private boolean checkVertical()
+	private boolean checkVertical(ENDGAME team)
 	{
 		points = 0;
 		stepX = 0;
 		//Checks from top to down
 		do
 		{
-			if(gameField[x + stepX][y].getText().equals(team))
+			if(gameField[x + stepX][y].getText().equals(team.teamSymbol))
 			{
 				points++;
 				if(points >= winRow)
@@ -252,7 +262,7 @@ public class GameField extends JFrame
 		{
 			do
 			{
-				if(gameField[x - stepX][y].getText().equals(team))
+				if(gameField[x - stepX][y].getText().equals(team.teamSymbol))
 				{
 					points++;
 					if(points >= winRow)
@@ -271,14 +281,14 @@ public class GameField extends JFrame
 		return true;
 	}
 	
-	private boolean checkHorizontal()
+	private boolean checkHorizontal(ENDGAME team)
 	{
 		points = 0;
 		stepX = 0;
 		//Checks from left to right
 		do
 		{
-			if(gameField[x][y + stepX].getText().equals(team))
+			if(gameField[x][y + stepX].getText().equals(team.teamSymbol))
 			{
 				points++;
 				if(points >= winRow)
@@ -299,7 +309,7 @@ public class GameField extends JFrame
 		{
 			do
 			{
-				if(gameField[x][y - stepX].getText().equals(team))
+				if(gameField[x][y - stepX].getText().equals(team.teamSymbol))
 				{
 					points++;
 					if(points >= winRow)
@@ -318,17 +328,27 @@ public class GameField extends JFrame
 		return true;
 	}
 	
-	private void endGame(String team) 
+	private void endGame(ENDGAME team) 
 	{
+		String symbol = team.teamSymbol;
 		for (int y = 0; y < size; y++)
 		{
 			for (int x = 0; x < size; x++) 
 			{
-				if (!gameField[x][y].getText().equals(team))
+				switch(team)
 				{
-					gameField[x][y].setEnabled(false);
-					gameField[x][y].setText("");
-				} 
+					case DRAW: 
+						gameField[x][y].setEnabled(false);
+						break;
+					case X_WON: 
+					case O_WON:
+						if (!gameField[x][y].getText().equals(symbol))
+						{
+							gameField[x][y].setEnabled(false);
+							gameField[x][y].setText("");
+						}
+						break;
+				}
 			} 
 		} 
 	}
