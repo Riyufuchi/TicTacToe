@@ -1,6 +1,5 @@
 package Forms;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Utils.FinalValues;
 import Utils.Helper;
 
 /**
@@ -24,8 +24,8 @@ public class Settings extends JFrame
     private JPanel contentPane;
     private JLabel[] label;
     private JTextField name1, name2;
-    private JComboBox<Integer> comboBox;
-    private final String[] labelTexts = {"Field size:", "Player1 name:", "Player2 name:"};
+    private JComboBox<Integer> sizeX, sizeY, winRow;
+    private final String[] labelTexts = {"Field size X:", "Field size Y:", "Win row:", "Player1 name: ", "Player2 name: "};
     private final String[] buttonsTexts = {"Cancel", "Start game"};
     private GridBagConstraints gbc;
     
@@ -57,7 +57,7 @@ public class Settings extends JFrame
     private void nastavitUI()
     {
         contentPane = new JPanel();
-        contentPane.setBackground(new Color(192,192,192));
+        contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
         contentPane.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -71,51 +71,60 @@ public class Settings extends JFrame
         for(int i = 0; i < buttons.length; i++)
         {
             buttons[i] = new JButton();
-            buttons[i].setBackground(new Color(214,217,223));
-            buttons[i].setForeground(new Color(0,0,0));
+            buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
             buttons[i].setText(buttonsTexts[i]);
         }
         //Combobox
-        comboBox = new JComboBox<Integer>();
-        comboBox.setBackground(new Color(214,217,223));
-        comboBox.addItem(8);
-        comboBox.addItem(12);
-        comboBox.addItem(16);
-        comboBox.addItem(20);
-        comboBox.addItem(24);
-        comboBox.addItem(26);
-        comboBox.addItem(30);
-        comboBox.addItem(32);
-        comboBox.setSelectedIndex(1);
+        sizeX = new JComboBox<Integer>();
+        sizeX.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        sizeY = new JComboBox<Integer>();
+        sizeY.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        winRow = new JComboBox<Integer>();
+        winRow.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        int size = 4;
+        for(int i = 0; i < 4; i++)
+        {
+        	size += 4;
+        	sizeX.addItem(size);
+        	sizeY.addItem(size);
+        }
+        size = 4;
+        for(int i = 0; i < 5; i++)
+        {
+        	winRow.addItem(size);
+        	size += 2;
+        }
         //Pridani na form
-        contentPane.add(comboBox, Helper.setGBC(1, 1, gbc));
-        contentPane.add(name1, Helper.setGBC(1, 2, gbc));
-        contentPane.add(name2, Helper.setGBC(1, 3, gbc));
-        contentPane.add(buttons[0], Helper.setGBC(0, 4, gbc));
-        contentPane.add(buttons[1], Helper.setGBC(1, 4, gbc));
+        contentPane.add(sizeX, Helper.setGBC(1, 1, gbc));
+        contentPane.add(sizeY, Helper.setGBC(1, 2, gbc));
+        contentPane.add(winRow, Helper.setGBC(1, 3, gbc));
+        contentPane.add(name1, Helper.setGBC(1, 4, gbc));
+        contentPane.add(name2, Helper.setGBC(1, 5, gbc));
+        contentPane.add(buttons[0], Helper.setGBC(0, 6, gbc));
+        contentPane.add(buttons[1], Helper.setGBC(1, 6, gbc));
     }
     
      private void vytvorUdalosti()
-    {
+     {
     	 buttons[0].addActionListener(new ActionListener() 
-        {
-            public void actionPerformed(ActionEvent evt) 
-            {
-            	System.exit(0);
-            }
-        });
+    	 {
+    		 public void actionPerformed(ActionEvent evt) 
+    		 {
+    			 System.exit(0);
+    		 }
+    	 });
     	 buttons[1].addActionListener(new ActionListener() 
-        {
-            public void actionPerformed(ActionEvent evt) 
-            {
-                zapnoutHru();
-            }
-        });
-    }
+    	 {
+    		 public void actionPerformed(ActionEvent evt) 
+    		 {
+    			 zapnoutHru();
+    		 }
+    	 });
+     }
         
     private void zapnoutHru()
     {
-        if(name1.getText().equals(""))
+    	if(name1.getText().equals(""))
         {
             name1.setText("X");
         }
@@ -123,7 +132,13 @@ public class Settings extends JFrame
         {
             name2.setText("O");
         }
-        new GameField((int)comboBox.getSelectedItem(), name1.getText(), name1.getText());
-        this.dispose();
+        int x = (int) sizeX.getSelectedItem();
+        int y = (int) sizeY.getSelectedItem();
+        int intWinRow = (int) winRow.getSelectedItem();
+        if((intWinRow < x - 2) && (intWinRow < y - 2))
+        {
+        	new GameField((int)sizeX.getSelectedItem(), (int)sizeY.getSelectedItem(), (int)winRow.getSelectedItem(), name1.getText(), name1.getText());
+            this.dispose();
+        }
     }
 }
