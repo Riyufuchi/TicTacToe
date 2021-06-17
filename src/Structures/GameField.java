@@ -11,14 +11,14 @@ import Utils.FinalValues;
  * @version 1.0
  * @since 1.3.3
  */
-public class Field 
+public class GameField 
 {
 	public JButton[][] gameField;
 	private int capped, teamIndex, stepX, points, sizeX, sizeY, winRow;
 	private Point point;
 	private Player[] players;
 	
-	public Field(Player[] players, int winRow, int sizeX, int sizeY)
+	public GameField(Player[] players, int winRow, int sizeX, int sizeY)
 	{
 		this.gameField = new JButton[sizeY][sizeX];
 		this.capped = teamIndex = points = stepX = 0;
@@ -29,7 +29,7 @@ public class Field
 		this.winRow = winRow;
 	}
 	
-	public Field(JButton[][] field, Player[] players, int winRow)
+	public GameField(JButton[][] field, Player[] players, int winRow)
 	{
 		this.gameField = field;
 		this.capped = teamIndex = points = stepX = 0;

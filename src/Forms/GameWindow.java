@@ -13,7 +13,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Structures.Field;
+import Structures.GameField;
 import Structures.Player;
 import Structures.TEAM;
 import Utils.FinalValues;
@@ -25,16 +25,16 @@ import Utils.JMenuAutoCreator;
  * @version 1.3.3
  * @since 1.0
  */
-public class GameField extends JFrame
+public class GameWindow extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private Field field;
+	private GameField field;
 	private GridBagConstraints gbc;
 	private JMenuAutoCreator mac;
 	private Player[] players;
 	
-	public GameField(int sizeX, int sizeY, int winRow, String name1, String name2) 
+	public GameWindow(int sizeX, int sizeY, int winRow, String name1, String name2) 
 	{
 		this.setTitle("TicTacToe");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,7 +43,7 @@ public class GameField extends JFrame
 		this.players = new Player[2];
 		this.players[0] = new Player(name1, Color.BLUE, TEAM.X);
 		this.players[1] = new Player(name2, Color.RED, TEAM.O);
-		this.field = new Field(players, winRow, sizeX, sizeY);
+		this.field = new GameField(players, winRow, sizeX, sizeY);
 		setField();
 		generateMenu();
 		this.add(contentPane);
@@ -52,13 +52,13 @@ public class GameField extends JFrame
 		this.setVisible(true);
 	}
 	
-	public GameField(int sizeX, int sizeY, int winRow, Player[] players, int x, int y) 
+	public GameWindow(int sizeX, int sizeY, int winRow, Player[] players, int x, int y) 
 	{
 		this.setTitle("TicTacToe");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-		this.field = new Field(players, winRow, sizeX, sizeY);
+		this.field = new GameField(players, winRow, sizeX, sizeY);
 		setField();
 		generateMenu();
 		this.add(contentPane);
@@ -160,7 +160,7 @@ public class GameField extends JFrame
   
 	private void reset() 
 	{
-		new GameField(field.getSizeX(), field.getSizeY(), field.getWinRow(), players, this.getX(), this.getY());
+		new GameWindow(field.getSizeX(), field.getSizeY(), field.getWinRow(), players, this.getX(), this.getY());
 		this.dispose();
 	}
 	

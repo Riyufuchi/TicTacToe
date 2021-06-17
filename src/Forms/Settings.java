@@ -25,7 +25,7 @@ public class Settings extends JFrame
     private JLabel[] label;
     private JTextField name1, name2;
     private JComboBox<Integer> sizeX, sizeY, winRow;
-    private final String[] labelTexts = {"Field size X:", "Field size Y:", "Win row:", "Player1 name: ", "Player2 name: "};
+    private final String[] labelTexts = {"Game field width:", "Game field height: ", "Win row:", "Player1 name:", "Player2 name:"};
     private final String[] buttonsTexts = {"Cancel", "Start game"};
     private GridBagConstraints gbc;
     
@@ -137,7 +137,7 @@ public class Settings extends JFrame
         int intWinRow = (int) winRow.getSelectedItem();
         if((intWinRow < x - 2) && (intWinRow < y - 2))
         {
-        	new GameField((int)sizeX.getSelectedItem(), (int)sizeY.getSelectedItem(), (int)winRow.getSelectedItem(), name1.getText(), name1.getText());
+        	new GameWindow((int)sizeX.getSelectedItem(), (int)sizeY.getSelectedItem(), (int)winRow.getSelectedItem(), name1.getText(), name1.getText());
             this.dispose();
         }
     }
