@@ -5,19 +5,17 @@ import java.awt.Color;
 public class Player 
 {
     private String name;
-    private Color color;
     private TEAM team;
     
-    public Player(String name, Color color, TEAM team)
+    public Player(String name, TEAM team)
     {
         this.name = name;
-        this.color = color;
         this.team = team;
     }
     
     public void setColor(Color color)
     {
-       this.color = color;
+       this.team.teamColor = color;
     }
     
     public String getTeam()
@@ -30,8 +28,8 @@ public class Player
         return this.name;
     }
     
-    public Color getColor()
+    public Color getTeamColor()
     {
-       return this.color;
+       return this.team.teamColor;
     }
 }

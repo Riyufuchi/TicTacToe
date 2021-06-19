@@ -2,6 +2,7 @@ package Forms;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -23,9 +24,10 @@ public class Settings extends JFrame
 	private JButton[] buttons;
     private JPanel contentPane;
     private JLabel[] label;
-    private JTextField name1, name2;
-    private JComboBox<Integer> sizeX, sizeY, winRow;
-    private final String[] labelTexts = {"Game field width:", "Game field height: ", "Win row:", "Player1 name:", "Player2 name:"};
+    private JTextField[] texts;
+    private JComboBox<Integer>[] comboBoxes;
+    private final String[] defaultPlayerNames = {"X", "O", "G", "M"};
+    private final String[] labelTexts = {" Game field width:", " Game field height:", " Win row:", " Number of players: ", " Player1 name:", " Player2 name:", " Player3 name:", " Player4 name:"};
     private final String[] buttonsTexts = {"Cancel", "Start game"};
     private GridBagConstraints gbc;
     
@@ -35,15 +37,30 @@ public class Settings extends JFrame
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        nastavitUI();
-        vytvorLabely();
+        setUI();
+        setLabels();
         vytvorUdalosti();
         this.add(contentPane);
         this.pack();
         this.setVisible(true);
     }
     
-    private void vytvorLabely()
+    public Settings(Point location)
+    {
+        this.setTitle("TicTacToe - Settings");
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        setUI();
+        setLabels();
+        vytvorUdalosti();
+        this.add(contentPane);
+        this.setLocation(location);
+        this.pack();
+        this.setVisible(true);
+    }
+    
+    private void setLabels()
     {
     	label = new JLabel[labelTexts.length];
     	for(int i = 0; i < labelTexts.length; i++)
@@ -54,54 +71,60 @@ public class Settings extends JFrame
     	}
     }
     
-    private void nastavitUI()
+    @SuppressWarnings("unchecked")
+	private void setUI()
     {
         contentPane = new JPanel();
         contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
         contentPane.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        int i = 0;
+        int size = 4;
+        //ComboBox
+        comboBoxes = new JComboBox[4];
+        for(i = 0; i < comboBoxes.length; i++)
+        {
+        	comboBoxes[i] = new JComboBox<Integer>();
+        	comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        	contentPane.add(comboBoxes[i], Helper.setGBC(1, i + 1, gbc));
+        }
+        for(i = 0; i < 4; i++)
+        {
+        	size += 4;
+        	comboBoxes[0].addItem(size);
+        	comboBoxes[1].addItem(size);
+        }
+        size = 4;
+        for(i = 0; i < 5; i++)
+        {
+        	comboBoxes[2].addItem(size);
+        	size += 2;
+        }
+        for(i = 2; i < 5; i++)
+        {
+        	comboBoxes[3].addItem(i);
+        }
         //TextField
-        name1 = new JTextField();
-        name1.setText("X");
-        name2 = new JTextField();
-        name2.setText("O");
-        //Tlacitka
+        texts = new JTextField[defaultPlayerNames.length];
+        for(i = 0; i < texts.length; i++)
+        {
+        	texts[i] = new JTextField();
+        	texts[i].setText(defaultPlayerNames[i]);
+        	contentPane.add(texts[i], Helper.setGBC(1, i + 5, gbc));
+        }
+        texts[2].setEnabled(false);
+        texts[3].setEnabled(false);
+        //Buttons
         buttons = new JButton[buttonsTexts.length];
-        for(int i = 0; i < buttons.length; i++)
+        for(i = 0; i < buttons.length; i++)
         {
             buttons[i] = new JButton();
             buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
             buttons[i].setText(buttonsTexts[i]);
         }
-        //Combobox
-        sizeX = new JComboBox<Integer>();
-        sizeX.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-        sizeY = new JComboBox<Integer>();
-        sizeY.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-        winRow = new JComboBox<Integer>();
-        winRow.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-        int size = 4;
-        for(int i = 0; i < 4; i++)
-        {
-        	size += 4;
-        	sizeX.addItem(size);
-        	sizeY.addItem(size);
-        }
-        size = 4;
-        for(int i = 0; i < 5; i++)
-        {
-        	winRow.addItem(size);
-        	size += 2;
-        }
-        //Pridani na form
-        contentPane.add(sizeX, Helper.setGBC(1, 1, gbc));
-        contentPane.add(sizeY, Helper.setGBC(1, 2, gbc));
-        contentPane.add(winRow, Helper.setGBC(1, 3, gbc));
-        contentPane.add(name1, Helper.setGBC(1, 4, gbc));
-        contentPane.add(name2, Helper.setGBC(1, 5, gbc));
-        contentPane.add(buttons[0], Helper.setGBC(0, 6, gbc));
-        contentPane.add(buttons[1], Helper.setGBC(1, 6, gbc));
+        contentPane.add(buttons[0], Helper.setGBC(0, 9, gbc));
+        contentPane.add(buttons[1], Helper.setGBC(1, 9, gbc));
     }
     
      private void vytvorUdalosti()
@@ -117,28 +140,44 @@ public class Settings extends JFrame
     	 {
     		 public void actionPerformed(ActionEvent evt) 
     		 {
-    			 zapnoutHru();
+    			 startGame();
+    		 }
+    	 });
+    	 comboBoxes[3].addActionListener (new ActionListener () 
+    	 {
+    		 public void actionPerformed(ActionEvent e) 
+    		 {
+    			 int i = 0;
+    			 for(i = 0; i < texts.length; i++)
+    			 {
+    				 texts[i].setEnabled(false);
+    			 }
+    			 for(i = 0; i < (int)comboBoxes[3].getSelectedItem(); i++)
+    			 {
+    				 texts[i].setEnabled(true);
+    			 }
     		 }
     	 });
      }
         
-    private void zapnoutHru()
-    {
-    	if(name1.getText().equals(""))
-        {
-            name1.setText("X");
-        }
-        if(name2.getText().equals(""))
-        {
-            name2.setText("O");
-        }
-        int x = (int) sizeX.getSelectedItem();
-        int y = (int) sizeY.getSelectedItem();
-        int intWinRow = (int) winRow.getSelectedItem();
-        if((intWinRow < x - 2) && (intWinRow < y - 2))
-        {
-        	new GameWindow((int)sizeX.getSelectedItem(), (int)sizeY.getSelectedItem(), (int)winRow.getSelectedItem(), name1.getText(), name1.getText());
-            this.dispose();
-        }
-    }
+     private void startGame()
+     {
+    	 String[] names = new String[(int)comboBoxes[3].getSelectedItem()];
+    	 for(int i = 0; i < names.length; i++)
+    	 {
+    		 if(texts[i].getText().equals(""))
+    		 {
+    			 names[i] = defaultPlayerNames[i];
+    		 }
+    		 names[i] = texts[i].getText();
+    	 }
+    	 int width = (int) comboBoxes[0].getSelectedItem();
+    	 int height = (int) comboBoxes[1].getSelectedItem();
+    	 int intWinRow = (int) comboBoxes[2].getSelectedItem();
+    	 if((intWinRow < width - 2) && (intWinRow < height - 2))
+    	 {
+    		 new GameWindow(width, height, intWinRow, names);
+    		 this.dispose();
+    	 }
+     }
 }

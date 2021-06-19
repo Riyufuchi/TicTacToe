@@ -1,6 +1,5 @@
 package Forms;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,7 +21,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3.3
+ * @version 1.3.4
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -34,15 +33,18 @@ public class GameWindow extends JFrame
 	private JMenuAutoCreator mac;
 	private Player[] players;
 	
-	public GameWindow(int sizeX, int sizeY, int winRow, String name1, String name2) 
+	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) 
 	{
 		this.setTitle("TicTacToe");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-		this.players = new Player[2];
-		this.players[0] = new Player(name1, Color.BLUE, TEAM.X);
-		this.players[1] = new Player(name2, Color.RED, TEAM.O);
+		this.players = new Player[playerNames.length];
+		TEAM[] teams = TEAM.values();
+		for(int i = 0; i < players.length; i++)
+		{
+			this.players[i] = new Player(playerNames[i], teams[i + 1]);
+		}
 		this.field = new GameField(players, winRow, sizeX, sizeY);
 		setField();
 		generateMenu();
@@ -52,17 +54,17 @@ public class GameWindow extends JFrame
 		this.setVisible(true);
 	}
 	
-	public GameWindow(int sizeX, int sizeY, int winRow, Player[] players, int x, int y) 
+	public GameWindow(GameField field, Point location) 
 	{
 		this.setTitle("TicTacToe");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
-		this.field = new GameField(players, winRow, sizeX, sizeY);
+		this.field = field;
 		setField();
 		generateMenu();
 		this.add(contentPane);
-		this.setLocation(new Point(x, y));
+		this.setLocation(location);
 		this.pack();
 		this.setVisible(true);
 	}
@@ -82,6 +84,7 @@ public class GameWindow extends JFrame
 				gameField[y][x].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
 				gameField[y][x].setName(String.valueOf(x + ";" + y));
 				gameField[y][x].setPreferredSize(new Dimension(50, 50));
+				gameField[y][x].setFont(FinalValues.GAME_FIELD_FONT);
 				gameField[y][x].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent e) 
@@ -89,7 +92,7 @@ public class GameWindow extends JFrame
 						String point = ((JButton)e.getSource()).getName();
 						if(!(point.equals(FinalValues.CAPPED)))
 						{
-							capturePoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
+							field.capPoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
 						}
 					}
 				}); 
@@ -160,28 +163,22 @@ public class GameWindow extends JFrame
   
 	private void reset() 
 	{
-		new GameWindow(field.getSizeX(), field.getSizeY(), field.getWinRow(), players, this.getX(), this.getY());
-		this.dispose();
+		field.restart();
 	}
 	
 	private void resize() 
 	{
-		new Settings();
+		new Settings(new Point(this.getX(), this.getY()));
 		this.dispose();
 	}
   
 	private void setO() 
 	{
-		field.getPlayer(1).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(1).getName(), field.getPlayer(1).getColor()));
+		field.getPlayer(1).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(1).getName(), field.getPlayer(1).getTeamColor()));
 	}
   
 	private void setX() 
 	{
-		field.getPlayer(0).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(0).getName(), field.getPlayer(0).getColor()));
-	}
-	
-	private void capturePoint(int y, int x) 
-	{
-		field.capPoint(y, x);
+		field.getPlayer(0).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(0).getName(), field.getPlayer(0).getTeamColor()));
 	}
 }

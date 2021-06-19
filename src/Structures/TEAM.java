@@ -1,17 +1,21 @@
 package Structures;
 
+import java.awt.Color;
+
 public enum TEAM
 {
-	DRAW("", -1),
-	X("X", 0),
-	O("O", 1);
+	NONE("", Color.BLACK),
+	X("X", Color.BLUE),
+	O("O", Color.RED),
+	G("♖", Color.GRAY),
+	M("M", Color.MAGENTA);
 	
 	public String teamSymbol;
-	public int index;
+	public Color teamColor;
 	
-	TEAM(String team, int index)
+	TEAM(String team, Color teamColor)
 	{
 		this.teamSymbol = team;
-		this.index = index;
+		this.teamColor = teamColor;
 	}
 }

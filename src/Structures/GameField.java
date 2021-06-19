@@ -8,7 +8,7 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.0
+ * @version 1.2
  * @since 1.3.3
  */
 public class GameField 
@@ -47,6 +47,20 @@ public class GameField
 		this.sizeY = gameField.length;
 	}
 	
+	public void restart()
+	{
+		for (int y = 0; y < gameField.length; y++) 
+		{
+			for (int x = 0; x < gameField[0].length; x++) 
+			{
+				gameField[y][x].setName(String.valueOf(x + ";" + y));
+				gameField[y][x].setText("");
+				gameField[y][x].setEnabled(true);
+			} 
+		}
+		capped = 0;
+	}
+	
 	public int getSizeX()
 	{
 		return sizeX;
@@ -79,7 +93,7 @@ public class GameField
 		{
 			gameField[x][y].setText(players[teamIndex].getTeam());
 			gameField[x][y].setName(FinalValues.CAPPED);
-			gameField[x][y].setForeground(players[teamIndex].getColor());
+			gameField[x][y].setForeground(players[teamIndex].getTeamColor());
 			capped++;
 			checkForWinner(players[teamIndex].getTeam());
 			if(teamIndex < players.length - 1)
@@ -105,7 +119,7 @@ public class GameField
 			{
 				if(capped == gameField.length * gameField[0].length)
 				{
-					endGame("");
+					endGame(TEAM.NONE.teamSymbol);
 				}
 			}
 		}
