@@ -18,7 +18,12 @@ public class Player
        this.team.teamColor = color;
     }
     
-    public String getTeam()
+    public void setName(String name)
+    {
+    	this.name = name;
+    }
+    
+    public String getTeamSymbol()
     {
     	return team.teamSymbol;
     }

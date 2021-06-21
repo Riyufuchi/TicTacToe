@@ -8,7 +8,7 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2
+ * @version 1.2.1
  * @since 1.3.3
  */
 public class GameField 
@@ -71,9 +71,19 @@ public class GameField
 		return sizeY;
 	}
 	
+	public Player[] getAllPlayers()
+	{
+		return players;
+	}
+	
 	public Player getPlayer(int index)
 	{
 		return players[index];
+	}
+	
+	public void setPlayer(Player player, int index)
+	{
+		players[index] = player;
 	}
 	
 	public JButton[][] getField()
@@ -91,11 +101,11 @@ public class GameField
 		point.setLocation(x, y);
 		if(!gameField[x][y].getName().equals(FinalValues.CAPPED))
 		{
-			gameField[x][y].setText(players[teamIndex].getTeam());
+			gameField[x][y].setText(players[teamIndex].getTeamSymbol());
 			gameField[x][y].setName(FinalValues.CAPPED);
 			gameField[x][y].setForeground(players[teamIndex].getTeamColor());
 			capped++;
-			checkForWinner(players[teamIndex].getTeam());
+			checkForWinner(players[teamIndex].getTeamSymbol());
 			if(teamIndex < players.length - 1)
 			{
 				teamIndex++;
@@ -132,7 +142,7 @@ public class GameField
 		//Checks from top to down
 		do
 		{
-			if(gameField[point.x + stepX][point.y].getText().equals(players[teamIndex].getTeam()))
+			if(gameField[point.x + stepX][point.y].getText().equals(players[teamIndex].getTeamSymbol()))
 			{
 				points++;
 				if(points >= winRow)
@@ -153,7 +163,7 @@ public class GameField
 		{
 			do
 			{
-				if(gameField[point.x - stepX][point.y].getText().equals(players[teamIndex].getTeam()))
+				if(gameField[point.x - stepX][point.y].getText().equals(players[teamIndex].getTeamSymbol()))
 				{
 					points++;
 					if(points >= winRow)
@@ -179,7 +189,7 @@ public class GameField
 		//Checks from left to right
 		do
 		{
-			if(gameField[point.x][point.y + stepX].getText().equals(players[teamIndex].getTeam()))
+			if(gameField[point.x][point.y + stepX].getText().equals(players[teamIndex].getTeamSymbol()))
 			{
 				points++;
 				if(points >= winRow)
@@ -200,7 +210,7 @@ public class GameField
 		{
 			do
 			{
-				if(gameField[point.x][point.y - stepX].getText().equals(players[teamIndex].getTeam()))
+				if(gameField[point.x][point.y - stepX].getText().equals(players[teamIndex].getTeamSymbol()))
 				{
 					points++;
 					if(points >= winRow)

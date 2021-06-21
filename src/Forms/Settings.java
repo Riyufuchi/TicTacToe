@@ -17,6 +17,8 @@ import Utils.Helper;
 
 /**
  * @author Riyufuchi
+ * @version 1.1
+ * @since 1.0
  */
 public class Settings extends JFrame
 {

@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -21,7 +20,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3.4
+ * @version 1.3.5
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -105,7 +104,7 @@ public class GameWindow extends JFrame
 	private void generateMenu() 
 	{
 		String[] menu = { "App", "Options"};
-		String[] menuItems = { "Resize", "Restart", "Exit", "", "Set player X", "Set player O", "About"};
+		String[] menuItems = { "Resize", "Restart", "Exit", "", "Player customization", "About", "Lincence"};
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
@@ -120,23 +119,14 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
-			case "Set player X": 
+			case "Player customization": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						setX();
+						setPlayers();
 					}
 				});
-				break;
-			case "Set player O": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						setO();
-					}
-				}); 
 				break;
 			case "Restart": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
@@ -172,13 +162,8 @@ public class GameWindow extends JFrame
 		this.dispose();
 	}
   
-	private void setO() 
+	private void setPlayers() 
 	{
-		field.getPlayer(1).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(1).getName(), field.getPlayer(1).getTeamColor()));
-	}
-  
-	private void setX() 
-	{
-		field.getPlayer(0).setColor(JColorChooser.showDialog(this, "Choose color for player " + field.getPlayer(0).getName(), field.getPlayer(0).getTeamColor()));
+		new PlayerSettings(field);
 	}
 }
