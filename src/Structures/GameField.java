@@ -4,11 +4,12 @@ import java.awt.Point;
 
 import javax.swing.JButton;
 
+import Forms.ErrorWindow;
 import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.1
+ * @version 1.2.2
  * @since 1.3.3
  */
 public class GameField 
@@ -71,6 +72,11 @@ public class GameField
 		return sizeY;
 	}
 	
+	public int getCapped()
+	{
+		return capped;
+	}
+	
 	public Player[] getAllPlayers()
 	{
 		return players;
@@ -105,7 +111,7 @@ public class GameField
 			gameField[x][y].setName(FinalValues.CAPPED);
 			gameField[x][y].setForeground(players[teamIndex].getTeamColor());
 			capped++;
-			checkForWinner(players[teamIndex].getTeamSymbol());
+			checkForWinner();
 			if(teamIndex < players.length - 1)
 			{
 				teamIndex++;
@@ -121,21 +127,21 @@ public class GameField
 	 * This method check if there is five(depends on winRow variable) X's or O's in row and declare winner
 	 * @param team (X or O) declares who is being checked  
 	 */
-	private void checkForWinner(String team) 
+	private void checkForWinner() 
 	{
-		if(checkHorizontal(team))
+		if(checkHorizontal())
 		{
-			if(checkVertical(team))
+			if(checkVertical())
 			{
 				if(capped == gameField.length * gameField[0].length)
 				{
-					endGame(TEAM.NONE.teamSymbol);
+					endGame(new Player("Draw", TEAM.NONE));
 				}
 			}
 		}
 	}
 	
-	private boolean checkVertical(String team)
+	private boolean checkVertical()
 	{
 		points = 0;
 		stepX = 0;
@@ -147,7 +153,7 @@ public class GameField
 				points++;
 				if(points >= winRow)
 				{
-					endGame(team);
+					endGame(players[teamIndex]);
 					return false;
 				}
 				stepX++;
@@ -168,7 +174,7 @@ public class GameField
 					points++;
 					if(points >= winRow)
 					{
-						endGame(team);
+						endGame(players[teamIndex]);
 						return false;
 					}
 					stepX++;
@@ -182,7 +188,7 @@ public class GameField
 		return true;
 	}
 	
-	private boolean checkHorizontal(String team)
+	private boolean checkHorizontal()
 	{
 		points = 0;
 		stepX = 0;
@@ -194,7 +200,7 @@ public class GameField
 				points++;
 				if(points >= winRow)
 				{
-					endGame(team);
+					endGame(players[teamIndex]);
 					return false;
 				}
 				stepX++;
@@ -215,7 +221,7 @@ public class GameField
 					points++;
 					if(points >= winRow)
 					{
-						endGame(team);
+						endGame(players[teamIndex]);
 						return false;
 					}
 					stepX++;
@@ -229,19 +235,20 @@ public class GameField
 		return true;
 	}
 	
-	private void endGame(String team) 
+	private void endGame(Player player) 
 	{
+		String symbol = player.getTeamSymbol();
 		for (int y = 0; y < sizeX; y++)
 		{
 			for (int x = 0; x < sizeY; x++) 
 			{
-				switch(team)
+				switch(symbol)
 				{
 					case "": 
 						gameField[x][y].setEnabled(false);
 						break;
 					default: 
-						if (!gameField[x][y].getText().equals(team))
+						if (!gameField[x][y].getText().equals(symbol))
 						{
 							gameField[x][y].setEnabled(false);
 							gameField[x][y].setText("");
@@ -249,6 +256,15 @@ public class GameField
 						break;
 				}
 			} 
-		} 
+		}
+		switch(symbol)
+		{
+			case "":
+				new ErrorWindow("Draw", "Field is filled up, but no one won.");
+				break;
+			default:
+				new ErrorWindow("Victory for team " + player.getTeamSymbol(), "Player " + player.getName() + " made final point for team " + player.getTeamSymbol() + "\nTeam " + player.getTeamSymbol() + " is victorious.");
+				break;
+		}
 	}
 }

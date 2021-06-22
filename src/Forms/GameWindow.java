@@ -20,7 +20,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3.5
+ * @version 1.3.6
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -28,6 +28,7 @@ public class GameWindow extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private GameField field;
+	private ErrorWindow about;
 	private GridBagConstraints gbc;
 	private JMenuAutoCreator mac;
 	private Player[] players;
@@ -103,8 +104,8 @@ public class GameWindow extends JFrame
 	
 	private void generateMenu() 
 	{
-		String[] menu = { "App", "Options"};
-		String[] menuItems = { "Resize", "Restart", "Exit", "", "Player customization", "About", "Lincence"};
+		String[] menu = { "Game", "Player options", "About"};
+		String[] menuItems = { "Resize", "Restart", "Exit", "", "Customization", "Statistics", "How to play", "", "Lincence"};
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
@@ -124,7 +125,7 @@ public class GameWindow extends JFrame
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						setPlayers();
+						new PlayerSettings(field);
 					}
 				});
 				break;
@@ -133,7 +134,7 @@ public class GameWindow extends JFrame
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						reset();
+						field.restart();
 					}
 				}); 
 				break;
@@ -146,24 +147,30 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
+			case "Statistics": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						int fields = field.getSizeX() * field.getSizeY();
+						if(about != null)
+						{
+							about.dispose();
+						}
+						about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n" 
+									+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
+									+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
+					}
+				}); 
+				break;
 			} 
 		} 
 		this.setJMenuBar(mac.getJMenuBar());
-	}
-  
-	private void reset() 
-	{
-		field.restart();
 	}
 	
 	private void resize() 
 	{
 		new Settings(new Point(this.getX(), this.getY()));
 		this.dispose();
-	}
-  
-	private void setPlayers() 
-	{
-		new PlayerSettings(field);
 	}
 }

@@ -176,10 +176,14 @@ public class Settings extends JFrame
     	 int width = (int) comboBoxes[0].getSelectedItem();
     	 int height = (int) comboBoxes[1].getSelectedItem();
     	 int intWinRow = (int) comboBoxes[2].getSelectedItem();
-    	 if((intWinRow < width - 2) && (intWinRow < height - 2))
+    	 if((intWinRow < width - 1) && (intWinRow < height - 1))
     	 {
     		 new GameWindow(width, height, intWinRow, names);
     		 this.dispose();
+    	 }
+    	 else
+    	 {
+    		 new ErrorWindow("Error - TicTacToe", "Win row must fit into the field, please select a bigger field size or smaler win row.");
     	 }
      }
 }
