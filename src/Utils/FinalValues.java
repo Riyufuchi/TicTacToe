@@ -14,4 +14,23 @@ public class FinalValues
 	public static final Font GAME_FIELD_FONT = new Font((new JButton()).getFont().getName(), Font.PLAIN, 16);
 	//Game logic
 	public static final String CAPPED = "OCCUPIED";
+	//Misc
+	public static final String GAME_TITTLE = "TicTacToe - " + FinalValues.VERSION;
+	public static final String VERSION = "1.4.1";
+	public static final String HOW_TO_PLAY = "Players take turns.\nFirst player that make line (horizontally, vertically or diagonally) of his team symbol wins.";
+	public static final String LICENSE = "Copyright (c) 2021 Riyufuchi\n\n" + 
+			"This licence is only aplicable for code with my copyright header and not for used libraries.\n" + 
+			"The code for this software is public for DEMOSTRATIONAL, PRESTATIONAL and EDUCATONAL purposes.\n" + 
+			"This software can be used for personal use (without limitation the rights to use, copy and modify), but not for redistribution with goal of making profit.\n" + 
+			"If modification are made end user have to be notified.\n" + 
+			"\n" + 
+			"The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n" + 
+			"\n" + 
+			"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n" + 
+			"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n" + 
+			"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n" + 
+			"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n" + 
+			"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" + 
+			"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n" + 
+			"SOFTWARE.";
 }

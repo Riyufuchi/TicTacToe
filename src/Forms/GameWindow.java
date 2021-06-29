@@ -20,7 +20,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3.6
+ * @version 1.4.1
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -35,7 +35,7 @@ public class GameWindow extends JFrame
 	
 	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) 
 	{
-		this.setTitle("TicTacToe");
+		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -56,7 +56,7 @@ public class GameWindow extends JFrame
 	
 	public GameWindow(GameField field, Point location) 
 	{
-		this.setTitle("TicTacToe");
+		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
@@ -99,13 +99,13 @@ public class GameWindow extends JFrame
 				contentPane.add(gameField[y][x], Helper.setGBC(x, y, gbc));
 			} 
 		}
-		field.setGameFiled(gameField);
+		field.setGameField(gameField);
 	}
 	
 	private void generateMenu() 
 	{
-		String[] menu = { "Game", "Player options", "About"};
-		String[] menuItems = { "Resize", "Restart", "Exit", "", "Customization", "Statistics", "How to play", "", "Lincence"};
+		String[] menu = { "Game options", "Player options", "About"};
+		String[] menuItems = { "Resize", "Restart", "Exit", "", "Customization", "Statistics", "How to play", "", "Lincense"};
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
@@ -161,6 +161,22 @@ public class GameWindow extends JFrame
 									+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
 									+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
 					}
+				}); 
+				break;
+			case "Lincense": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						new ErrorWindow("LICENSE", FinalValues.LICENSE);					}
+				}); 
+				break;
+			case "How to play": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY);					}
 				}); 
 				break;
 			} 

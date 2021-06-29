@@ -9,7 +9,7 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.2
+ * @version 1.2.3
  * @since 1.3.3
  */
 public class GameField 
@@ -41,7 +41,7 @@ public class GameField
 		this.winRow = winRow;
 	}
 	
-	public void setGameFiled(JButton[][] field)
+	public void setGameField(JButton[][] field)
 	{
 		this.gameField = field;
 		this.sizeX = gameField[0].length;
@@ -60,46 +60,6 @@ public class GameField
 			} 
 		}
 		capped = 0;
-	}
-	
-	public int getSizeX()
-	{
-		return sizeX;
-	}
-	
-	public int getSizeY()
-	{
-		return sizeY;
-	}
-	
-	public int getCapped()
-	{
-		return capped;
-	}
-	
-	public Player[] getAllPlayers()
-	{
-		return players;
-	}
-	
-	public Player getPlayer(int index)
-	{
-		return players[index];
-	}
-	
-	public void setPlayer(Player player, int index)
-	{
-		players[index] = player;
-	}
-	
-	public JButton[][] getField()
-	{
-		return gameField;
-	}
-	
-	public int getWinRow()
-	{
-		return winRow;
 	}
 	
 	public void capPoint(int y, int x)
@@ -129,9 +89,9 @@ public class GameField
 	 */
 	private void checkForWinner() 
 	{
-		if(checkHorizontal())
+		if(checkDiagonalLeft() && checkDiagonalRight())
 		{
-			if(checkVertical())
+			if(checkVertical() && checkHorizontal())
 			{
 				if(capped == gameField.length * gameField[0].length)
 				{
@@ -139,6 +99,102 @@ public class GameField
 				}
 			}
 		}
+	}
+	
+	//This function check field from right to left down/up
+		private boolean checkDiagonalRight()
+		{
+			points = 0;
+			stepX = 0;
+			//Checks from top to down
+			do
+			{
+				if(gameField[point.x - stepX][point.y + stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+				{
+					points++;
+					if(points >= winRow)
+					{
+						endGame(players[teamIndex]);
+						return false;
+					}
+					stepX++;
+				}
+				else
+				{
+					break;
+				}
+			}while((point.x - stepX > -1) && (point.y + stepX < sizeX));
+			//Checks from down to top
+			stepX = 1;
+			if((point.x + stepX < sizeY) && (point.y - stepX > -1))
+			{
+				do
+				{
+					if(gameField[point.x + stepX][point.y - stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+					{
+						points++;
+						if(points >= winRow)
+						{
+							endGame(players[teamIndex]);
+							return false;
+						}
+						stepX++;
+					}
+					else
+					{
+						break;
+					}
+				}while((point.x + stepX < sizeY) && (point.y - stepX > -1));
+			}
+			return true;
+		}
+	
+	//This function check field from left to right down/up
+	private boolean checkDiagonalLeft()
+	{
+		points = 0;
+		stepX = 0;
+		//Checks from top to down
+		do
+		{
+			if(gameField[point.x + stepX][point.y + stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+			{
+				points++;
+				if(points >= winRow)
+				{
+					endGame(players[teamIndex]);
+					return false;
+				}
+				stepX++;
+			}
+			else
+			{
+				break;
+			}
+		}while((point.x + stepX < sizeY) && (point.y + stepX < sizeX));
+		//Checks from down to top
+		stepX = 1;
+		if((point.x - stepX > -1) && (point.y - stepX > -1))
+		{
+			do
+			{
+				if(gameField[point.x - stepX][point.y - stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+				{
+					points++;
+					if(points >= winRow)
+					{
+						endGame(players[teamIndex]);
+						return false;
+					}
+					stepX++;
+				}
+				else
+				{
+					break;
+				}
+			}while((point.x - stepX > -1) && (point.y - stepX > -1));
+		}
+		return true;
 	}
 	
 	private boolean checkVertical()
@@ -260,11 +316,51 @@ public class GameField
 		switch(symbol)
 		{
 			case "":
-				new ErrorWindow("Draw", "Field is filled up, but no one won.");
+				new ErrorWindow("Draw", "Field is filled up, but nobody won.");
 				break;
 			default:
 				new ErrorWindow("Victory for team " + player.getTeamSymbol(), "Player " + player.getName() + " made final point for team " + player.getTeamSymbol() + "\nTeam " + player.getTeamSymbol() + " is victorious.");
 				break;
 		}
+	}
+	
+	public int getSizeX()
+	{
+		return sizeX;
+	}
+	
+	public int getSizeY()
+	{
+		return sizeY;
+	}
+	
+	public int getCapped()
+	{
+		return capped;
+	}
+	
+	public Player[] getAllPlayers()
+	{
+		return players;
+	}
+	
+	public Player getPlayer(int index)
+	{
+		return players[index];
+	}
+	
+	public void setPlayer(Player player, int index)
+	{
+		players[index] = player;
+	}
+	
+	public JButton[][] getField()
+	{
+		return gameField;
+	}
+	
+	public int getWinRow()
+	{
+		return winRow;
 	}
 }
