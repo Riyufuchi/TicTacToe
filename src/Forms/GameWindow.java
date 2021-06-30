@@ -20,7 +20,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.4.1
+ * @version 1.4.2
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -120,7 +120,7 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
-			case "Player customization": 
+			case "Customization": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent evt) 
@@ -168,7 +168,8 @@ public class GameWindow extends JFrame
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						new ErrorWindow("LICENSE", FinalValues.LICENSE);					}
+						new ErrorWindow("LICENSE", FinalValues.LICENSE);
+					}
 				}); 
 				break;
 			case "How to play": 
@@ -176,7 +177,8 @@ public class GameWindow extends JFrame
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY);					}
+						new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY);
+					}
 				}); 
 				break;
 			} 
@@ -186,7 +188,7 @@ public class GameWindow extends JFrame
 	
 	private void resize() 
 	{
-		new Settings(new Point(this.getX(), this.getY()));
+		new GameSettings(new Point(this.getX(), this.getY()));
 		this.dispose();
 	}
 }

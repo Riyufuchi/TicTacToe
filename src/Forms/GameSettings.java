@@ -14,13 +14,14 @@ import javax.swing.JTextField;
 
 import Utils.FinalValues;
 import Utils.Helper;
+import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
-public class Settings extends JFrame
+public class GameSettings extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 	private JButton[] buttons;
@@ -28,12 +29,13 @@ public class Settings extends JFrame
     private JLabel[] label;
     private JTextField[] texts;
     private JComboBox<Integer>[] comboBoxes;
+    private JMenuAutoCreator mac;
     private final String[] defaultPlayerNames = {"X", "O", "G", "M"};
-    private final String[] labelTexts = {" Game field width:", " Game field height:", " Win row:", " Number of players: ", " Player1 name:", " Player2 name:", " Player3 name:", " Player4 name:"};
+    private final String[] labelTexts = {"Game field width:", "Game field height:", "Win row:", "Number of players: ", "Player1 name:", "Player2 name:", "Player3 name:", "Player4 name:"};
     private final String[] buttonsTexts = {"Cancel", "Start game"};
     private GridBagConstraints gbc;
     
-    public Settings()
+    public GameSettings()
     {
         this.setTitle("TicTacToe - Settings");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,13 +43,14 @@ public class Settings extends JFrame
         this.setResizable(false);
         setUI();
         setLabels();
-        vytvorUdalosti();
+        setEvents();
+        generateMenu();
         this.add(contentPane);
         this.pack();
         this.setVisible(true);
     }
     
-    public Settings(Point location)
+    public GameSettings(Point location)
     {
         this.setTitle("TicTacToe - Settings");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,7 +58,8 @@ public class Settings extends JFrame
         this.setResizable(false);
         setUI();
         setLabels();
-        vytvorUdalosti();
+        setEvents();
+        generateMenu();
         this.add(contentPane);
         this.setLocation(location);
         this.pack();
@@ -72,6 +76,29 @@ public class Settings extends JFrame
             contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
     	}
     }
+    
+    private void generateMenu() 
+	{
+		String[] menu = {"?"};
+		String[] menuItems = {"How to select field size"};
+		mac = new JMenuAutoCreator(menu, menuItems);
+		for (int i = 0; i < mac.getMenuItem().length; i++) 
+		{
+			switch (mac.getMenuItem()[i].getName()) 
+			{
+				case "How to select field size":
+					mac.getMenuItem()[i].addActionListener(new ActionListener() 
+					{
+						public void actionPerformed(ActionEvent evt) 
+						{
+							new ErrorWindow("How to select sizes", "Height 20 is maximum recommended for Full HD 27 inch screens (width can be maximum).\nSelect size according to your screen by try and error method.");
+						}
+					}); 
+					break;
+			} 
+		} 
+		this.setJMenuBar(mac.getJMenuBar());
+	}
     
     @SuppressWarnings("unchecked")
 	private void setUI()
@@ -91,14 +118,14 @@ public class Settings extends JFrame
         	comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
         	contentPane.add(comboBoxes[i], Helper.setGBC(1, i + 1, gbc));
         }
-        for(i = 0; i < 4; i++)
+        for(i = 0; i < 6; i++)
         {
         	size += 4;
         	comboBoxes[0].addItem(size);
         	comboBoxes[1].addItem(size);
         }
         size = 4;
-        for(i = 0; i < 5; i++)
+        for(i = 0; i < 7; i++)
         {
         	comboBoxes[2].addItem(size);
         	size += 2;
@@ -129,7 +156,7 @@ public class Settings extends JFrame
         contentPane.add(buttons[1], Helper.setGBC(1, 9, gbc));
     }
     
-     private void vytvorUdalosti()
+     private void setEvents()
      {
     	 buttons[0].addActionListener(new ActionListener() 
     	 {
@@ -143,6 +170,16 @@ public class Settings extends JFrame
     		 public void actionPerformed(ActionEvent evt) 
     		 {
     			 startGame();
+    		 }
+    	 });
+    	 comboBoxes[1].addActionListener (new ActionListener () 
+    	 {
+    		 public void actionPerformed(ActionEvent e) 
+    		 {
+    			 if(comboBoxes[1].getSelectedIndex() > 3)
+    			 {
+    				 new ErrorWindow("Warning", "Selected height is above 20 and it might not fit into your screen.\nHeight 20 is recommended maximum for Full HD 27 inch monitors.");
+    			 }
     		 }
     	 });
     	 comboBoxes[3].addActionListener (new ActionListener () 

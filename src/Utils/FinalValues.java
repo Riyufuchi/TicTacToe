@@ -10,13 +10,14 @@ public class FinalValues
 	//Colors
 	public static final Color DEFAULT_BUTTON_BACKGROUND = new Color(214,217,223);
 	public static final Color DEFAULT_PANE_BACKGROUND = new Color(192,192,192);
+	public static final Color OK = new Color(75,175,75);
 	//Visuals
 	public static final Font GAME_FIELD_FONT = new Font((new JButton()).getFont().getName(), Font.PLAIN, 16);
 	//Game logic
 	public static final String CAPPED = "OCCUPIED";
 	//Misc
 	public static final String GAME_TITTLE = "TicTacToe - " + FinalValues.VERSION;
-	public static final String VERSION = "1.4.1";
+	public static final String VERSION = "2.0";
 	public static final String HOW_TO_PLAY = "Players take turns.\nFirst player that make line (horizontally, vertically or diagonally) of his team symbol wins.";
 	public static final String LICENSE = "Copyright (c) 2021 Riyufuchi\n\n" + 
 			"This licence is only aplicable for code with my copyright header and not for used libraries.\n" + 

@@ -1,5 +1,6 @@
 package Forms;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,7 +21,7 @@ import Utils.Helper;
 
 /**
  * @author Riyufuchi
- * @version 1.1
+ * @version 1.2
  * @since 1.0 - but really implemented in version 1.3.5
  */
 public class PlayerSettings extends JFrame
@@ -29,13 +30,14 @@ public class PlayerSettings extends JFrame
 	private JButton[] buttons;
 	private JPanel contentPane;
 	private GameField field;
-    private JTextField playerName;
+    private JTextField playerName, playerSymbol;
     private JButton preview;
     private Player[] players;
     private JComboBox<String>[] comboBoxes;
     private JLabel[] label;
     private final String[] labelTexts = {"Player:", "Name:", "Team Symbol:", "Color:", "Preview/Default: "};
     private final String[] buttonsTexts = {"Color", "Cancel", "Save changes"};
+    private boolean save;
     private GridBagConstraints gbc;
     
     public PlayerSettings(GameField field)
@@ -46,9 +48,11 @@ public class PlayerSettings extends JFrame
     	this.setResizable(false);
     	this.field = field;
     	this.players = field.getAllPlayers();
+    	this.save = true;
     	setUI();
     	setLabels();
     	createEvents();
+    	this.setAlwaysOnTop(true);
     	this.add(contentPane);
     	this.pack();
     	this.setVisible(true);
@@ -74,7 +78,7 @@ public class PlayerSettings extends JFrame
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         //ComboBoxes
-        comboBoxes = new JComboBox[2];
+        comboBoxes = new JComboBox[1];
         int i = 0;
         for(i = 0; i < comboBoxes.length; i++)
         {
@@ -85,11 +89,11 @@ public class PlayerSettings extends JFrame
         {
         	comboBoxes[0].addItem(players[i].getName());
         }
-        comboBoxes[1].addItem(players[0].getTeamSymbol() + " Default");
-        comboBoxes[1].setEnabled(false);
         //TextFiled
         playerName = new JTextField();
         playerName.setText(players[0].getName());
+        playerSymbol = new JTextField();
+        playerSymbol.setText(players[0].getTeamSymbol());
         //Buttons
         buttons = new JButton[buttonsTexts.length];
         for(i = 0; i < buttons.length; i++)
@@ -104,7 +108,7 @@ public class PlayerSettings extends JFrame
         preview.setText(players[0].getTeamSymbol());
         preview.setPreferredSize(new Dimension(50, 60));
         contentPane.add(comboBoxes[0], Helper.setGBC(1, 1, gbc));
-        contentPane.add(comboBoxes[1], Helper.setGBC(1, 3, gbc));
+        contentPane.add(playerSymbol, Helper.setGBC(1, 3, gbc));
         contentPane.add(playerName, Helper.setGBC(1, 2, gbc));
         contentPane.add(preview, Helper.setGBC(1, 5, gbc));
         contentPane.add(buttons[0], Helper.setGBC(1, 4, gbc));
@@ -132,25 +136,55 @@ public class PlayerSettings extends JFrame
     	{
     		public void actionPerformed(ActionEvent evt) 
     		{
-    			players[comboBoxes[0].getSelectedIndex()].setColor(preview.getForeground());
-    			field.setPlayer(players[comboBoxes[0].getSelectedIndex()], comboBoxes[0].getSelectedIndex());
+    			save = true;
+    			resetSaveButton();
+    			if(playerName.getText().equals(""))
+    			{
+    				new ErrorWindow("Input error", "Player name cant be empty/null.");
+    				save = false;
+    			}
+    			//Some unicode symbols had problems when length condion was (length != 1)
+    			if(playerSymbol.getText().equals("") || !(playerSymbol.getText().length() < 4))
+    			{
+    				new ErrorWindow("Input error", "Team symbol cant be empty/null and longer than 1 character.");
+    				save = false;
+    			}
+    			if(save)
+    			{
+    				players[comboBoxes[0].getSelectedIndex()].setName(playerName.getText());
+    				players[comboBoxes[0].getSelectedIndex()].getTeam().teamSymbol = playerSymbol.getText();
+    				players[comboBoxes[0].getSelectedIndex()].setColor(preview.getForeground());
+    				field.setPlayer(players[comboBoxes[0].getSelectedIndex()], comboBoxes[0].getSelectedIndex());
+    				sucessfullSave();
+    				preview.setText(playerSymbol.getText());
+    			}
     		}
     	});
     	comboBoxes[0].addActionListener (new ActionListener () 
     	{
     		public void actionPerformed(ActionEvent e) 
     		{
+    			resetSaveButton();
     			playerName.setText(players[comboBoxes[0].getSelectedIndex()].getName());
-    			comboBoxes[1].removeAllItems();
-    			comboBoxes[1].addItem(players[comboBoxes[0].getSelectedIndex()].getTeamSymbol() + " Default");
+    			playerSymbol.setText(players[comboBoxes[0].getSelectedIndex()].getTeamSymbol());
     			preview.setForeground(players[comboBoxes[0].getSelectedIndex()].getTeamColor());
-    			if(!playerName.getText().equals(""))
-    			{
-    				players[comboBoxes[0].getSelectedIndex()].setName(playerName.getText());
-    			}
     	        preview.setText(players[comboBoxes[0].getSelectedIndex()].getTeamSymbol());
     		}
     	});
+    }
+    
+    private void sucessfullSave()
+    {
+    	buttons[2].setText("Changes saved");
+    	buttons[2].setForeground(FinalValues.OK);
+    	this.pack();
+    }
+    
+    private void resetSaveButton()
+    {
+    	buttons[2].setText(buttonsTexts[2]);
+    	buttons[2].setForeground(Color.BLACK);
+    	this.pack();
     }
     
     private void saveExit()

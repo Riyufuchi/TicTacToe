@@ -5,10 +5,10 @@ import java.awt.Color;
 public enum TEAM
 {
 	NONE("", Color.BLACK),
-	X("X", Color.BLUE),
-	O("O", Color.RED),
-	G("♖", Color.GRAY),
-	M("M", Color.MAGENTA);
+	X("❌", Color.BLUE),
+	O("⭘", Color.RED),
+	G("💼", Color.GRAY),
+	M("♖", Color.MAGENTA);
 	
 	public String teamSymbol;
 	public Color teamColor;

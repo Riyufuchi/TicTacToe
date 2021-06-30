@@ -23,6 +23,11 @@ public class Player
     	this.name = name;
     }
     
+    public TEAM getTeam()
+    {
+    	return team;
+    }
+    
     public String getTeamSymbol()
     {
     	return team.teamSymbol;
