@@ -102,14 +102,35 @@ public class GameField
 	}
 	
 	//This function check field from right to left down/up
-		private boolean checkDiagonalRight()
+	private boolean checkDiagonalRight()
+	{
+		points = 0;
+		stepX = 0;
+		//Checks from top to down
+		do
 		{
-			points = 0;
-			stepX = 0;
-			//Checks from top to down
+			if(gameField[point.x - stepX][point.y + stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+			{
+				points++;
+				if(points >= winRow)
+				{
+					endGame(players[teamIndex]);
+					return false;
+				}
+				stepX++;
+			}
+			else
+			{
+				break;
+			}
+		}while((point.x - stepX > -1) && (point.y + stepX < sizeX));
+		//Checks from down to top
+		stepX = 1;
+		if((point.x + stepX < sizeY) && (point.y - stepX > -1))
+		{
 			do
 			{
-				if(gameField[point.x - stepX][point.y + stepX].getText().equals(players[teamIndex].getTeamSymbol()))
+				if(gameField[point.x + stepX][point.y - stepX].getText().equals(players[teamIndex].getTeamSymbol()))
 				{
 					points++;
 					if(points >= winRow)
@@ -123,31 +144,10 @@ public class GameField
 				{
 					break;
 				}
-			}while((point.x - stepX > -1) && (point.y + stepX < sizeX));
-			//Checks from down to top
-			stepX = 1;
-			if((point.x + stepX < sizeY) && (point.y - stepX > -1))
-			{
-				do
-				{
-					if(gameField[point.x + stepX][point.y - stepX].getText().equals(players[teamIndex].getTeamSymbol()))
-					{
-						points++;
-						if(points >= winRow)
-						{
-							endGame(players[teamIndex]);
-							return false;
-						}
-						stepX++;
-					}
-					else
-					{
-						break;
-					}
-				}while((point.x + stepX < sizeY) && (point.y - stepX > -1));
-			}
-			return true;
+			}while((point.x + stepX < sizeY) && (point.y - stepX > -1));
 		}
+		return true;
+	}
 	
 	//This function check field from left to right down/up
 	private boolean checkDiagonalLeft()
