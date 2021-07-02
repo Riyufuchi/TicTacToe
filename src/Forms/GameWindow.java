@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import Structures.GameField;
 import Structures.Player;
@@ -20,13 +22,13 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.4.2
+ * @version 1.4.3
  * @since 1.0
  */
 public class GameWindow extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JScrollPane scrollPane;
 	private GameField field;
 	private ErrorWindow about;
 	private GridBagConstraints gbc;
@@ -38,7 +40,15 @@ public class GameWindow extends JFrame
 		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		if(sizeY > 20)
+		{
+			this.setResizable(true);
+			this.setMinimumSize(new Dimension(800, 600));
+		}
+		else
+		{
+			this.setResizable(false);
+		}
 		this.players = new Player[playerNames.length];
 		TEAM[] teams = TEAM.values();
 		for(int i = 0; i < players.length; i++)
@@ -48,7 +58,7 @@ public class GameWindow extends JFrame
 		this.field = new GameField(players, winRow, sizeX, sizeY);
 		setField();
 		generateMenu();
-		this.add(contentPane);
+		this.add(scrollPane);
 		this.setLocation(new Point(180, 80));
 		this.pack();
 		this.setVisible(true);
@@ -59,11 +69,18 @@ public class GameWindow extends JFrame
 		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setResizable(false);
 		this.field = field;
+		if(field.getSizeY() > 20)
+		{
+			this.setResizable(true);
+		}
+		else
+		{
+			this.setResizable(false);
+		}
 		setField();
 		generateMenu();
-		this.add(contentPane);
+		this.add(scrollPane);
 		this.setLocation(location);
 		this.pack();
 		this.setVisible(true);
@@ -71,8 +88,9 @@ public class GameWindow extends JFrame
 	
 	private void setField() 
 	{
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new GridBagLayout());
+		contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		JButton[][] gameField = field.getField();
@@ -85,6 +103,7 @@ public class GameWindow extends JFrame
 				gameField[y][x].setName(String.valueOf(x + ";" + y));
 				gameField[y][x].setPreferredSize(new Dimension(50, 50));
 				gameField[y][x].setFont(FinalValues.GAME_FIELD_FONT);
+				//gameField[y][x].setText(x + ";" + y);
 				gameField[y][x].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent e) 
@@ -99,13 +118,19 @@ public class GameWindow extends JFrame
 				contentPane.add(gameField[y][x], Helper.setGBC(x, y, gbc));
 			} 
 		}
+		contentPane.revalidate();
+        scrollPane = new JScrollPane(contentPane);
 		field.setGameField(gameField);
 	}
 	
 	private void generateMenu() 
 	{
-		String[] menu = { "Game options", "Player options", "About"};
-		String[] menuItems = { "Resize", "Restart", "Exit", "", "Customization", "Statistics", "How to play", "", "Lincense"};
+		String[] menu = { "Game options", "Player options", "About", "Debug"};
+		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize"};
+		if(this.isResizable())
+		{
+			menuItems[10] = "Allow resize ✓";
+		}
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
@@ -168,7 +193,7 @@ public class GameWindow extends JFrame
 				{
 					public void actionPerformed(ActionEvent evt) 
 					{
-						new ErrorWindow("LICENSE", FinalValues.LICENSE);
+						new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE);
 					}
 				}); 
 				break;
@@ -181,9 +206,24 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
+			case "Allow resize": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						debug();
+						((JMenuItem)evt.getSource()).setText("Allow resize ✓");
+					}
+				}); 
+				break;
 			} 
 		} 
 		this.setJMenuBar(mac.getJMenuBar());
+	}
+	
+	private void debug()
+	{
+		this.setResizable(true);
 	}
 	
 	private void resize() 

@@ -18,7 +18,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 public class GameSettings extends JFrame
@@ -91,7 +91,9 @@ public class GameSettings extends JFrame
 					{
 						public void actionPerformed(ActionEvent evt) 
 						{
-							new ErrorWindow("How to select sizes", "Height 20 is maximum recommended for Full HD 27 inch screens (width can be maximum).\nSelect size according to your screen by try and error method.");
+							new ErrorWindow("How to select sizes", "1. Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).\n"
+									+ "2. Select size according to your screen by try and error method.\n"
+									+ "3. But just in case it wouldnt fit, there would be scroll bars, so you can navigate around the game field.");
 						}
 					}); 
 					break;
@@ -118,18 +120,20 @@ public class GameSettings extends JFrame
         	comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
         	contentPane.add(comboBoxes[i], Helper.setGBC(1, i + 1, gbc));
         }
-        for(i = 0; i < 6; i++)
+        for(i = 0; i < 8; i++)
         {
         	size += 4;
         	comboBoxes[0].addItem(size);
         	comboBoxes[1].addItem(size);
         }
         size = 4;
+        comboBoxes[2].addItem(3);
         for(i = 0; i < 7; i++)
         {
         	comboBoxes[2].addItem(size);
         	size += 2;
         }
+        comboBoxes[2].setSelectedIndex(1);
         for(i = 2; i < 5; i++)
         {
         	comboBoxes[3].addItem(i);
@@ -178,7 +182,8 @@ public class GameSettings extends JFrame
     		 {
     			 if(comboBoxes[1].getSelectedIndex() > 3)
     			 {
-    				 new ErrorWindow("Warning", "Selected height is above 20 and it might not fit into your screen.\nHeight 20 is recommended maximum for Full HD 27 inch monitors.");
+    				 new ErrorWindow("Warning", "Selected height is above 20 and it might not fit into your screen, but if it is not going to fit, there are going to be scroll bars, so you can navigate around the game field.\n"
+    				 		+ "Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).");
     			 }
     		 }
     	 });

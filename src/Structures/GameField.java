@@ -9,7 +9,7 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.3
+ * @version 1.2.4
  * @since 1.3.3
  */
 public class GameField 
@@ -62,14 +62,14 @@ public class GameField
 		capped = 0;
 	}
 	
-	public void capPoint(int y, int x)
+	public void capPoint(int x, int y)
 	{
-		point.setLocation(x, y);
-		if(!gameField[x][y].getName().equals(FinalValues.CAPPED))
+		point.setLocation(y, x);
+		if(!gameField[y][x].getName().equals(FinalValues.CAPPED))
 		{
-			gameField[x][y].setText(players[teamIndex].getTeamSymbol());
-			gameField[x][y].setName(FinalValues.CAPPED);
-			gameField[x][y].setForeground(players[teamIndex].getTeamColor());
+			gameField[y][x].setText(players[teamIndex].getTeamSymbol());
+			gameField[y][x].setName(FinalValues.CAPPED);
+			gameField[y][x].setForeground(players[teamIndex].getTeamColor());
 			capped++;
 			checkForWinner();
 			if(teamIndex < players.length - 1)
@@ -294,20 +294,20 @@ public class GameField
 	private void endGame(Player player) 
 	{
 		String symbol = player.getTeamSymbol();
-		for (int y = 0; y < sizeX; y++)
+		for (int y = 0; y < sizeY; y++)
 		{
-			for (int x = 0; x < sizeY; x++) 
+			for (int x = 0; x < sizeX; x++) 
 			{
 				switch(symbol)
 				{
 					case "": 
-						gameField[x][y].setEnabled(false);
+						gameField[y][x].setEnabled(false);
 						break;
 					default: 
-						if (!gameField[x][y].getText().equals(symbol))
+						if (!gameField[y][x].getText().equals(symbol))
 						{
-							gameField[x][y].setEnabled(false);
-							gameField[x][y].setText("");
+							gameField[y][x].setEnabled(false);
+							gameField[y][x].setText("");
 						}
 						break;
 				}
