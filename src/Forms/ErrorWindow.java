@@ -10,8 +10,7 @@ import javax.swing.JTextArea;
 
 import Utils.FinalValues;
 
-/**
- * Copyright Header
+/** Copyright Header
  * 
  * Project: ODB Manager
  * Created On: 13.07.2020

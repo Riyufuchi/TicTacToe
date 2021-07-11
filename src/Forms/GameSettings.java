@@ -180,9 +180,9 @@ public class GameSettings extends JFrame
     	 {
     		 public void actionPerformed(ActionEvent e) 
     		 {
-    			 if(comboBoxes[1].getSelectedIndex() > 3)
+    			 if(comboBoxes[1].getSelectedIndex() > 2)
     			 {
-    				 new ErrorWindow("Warning", "Selected height is above 20 and it might not fit into your screen, but if it is not going to fit, there are going to be scroll bars, so you can navigate around the game field.\n"
+    				 new ErrorWindow("Warning", "Selected height is 20 and above and it might not fit into your screen, but if it is not going to fit, there are going to be scroll bars, so you can navigate around the game field.\n"
     				 		+ "Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).");
     			 }
     		 }

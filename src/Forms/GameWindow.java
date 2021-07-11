@@ -22,7 +22,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.4.3
+ * @version 1.4.4
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -40,7 +40,7 @@ public class GameWindow extends JFrame
 		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		if(sizeY > 20)
+		if(sizeY > 16)
 		{
 			this.setResizable(true);
 			this.setMinimumSize(new Dimension(800, 600));
@@ -70,7 +70,7 @@ public class GameWindow extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.field = field;
-		if(field.getSizeY() > 20)
+		if(field.getSizeY() > 16)
 		{
 			this.setResizable(true);
 		}
@@ -102,7 +102,7 @@ public class GameWindow extends JFrame
 				gameField[y][x].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
 				gameField[y][x].setName(String.valueOf(x + ";" + y));
 				gameField[y][x].setPreferredSize(new Dimension(50, 50));
-				gameField[y][x].setFont(FinalValues.GAME_FIELD_FONT);
+				gameField[y][x].setFont(FinalValues.ERROR_WINDOW_FONT);
 				//gameField[y][x].setText(x + ";" + y);
 				gameField[y][x].addActionListener(new ActionListener() 
 				{
@@ -136,7 +136,7 @@ public class GameWindow extends JFrame
 		{
 			switch (mac.getMenuItem()[i].getName()) 
 			{
-			case "Exit":	
+			case "Exit 🚪":	
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent evt) 
@@ -154,7 +154,7 @@ public class GameWindow extends JFrame
 					}
 				});
 				break;
-			case "Restart": 
+			case "Restart 🔁": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent evt) 
@@ -163,7 +163,7 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
-			case "Resize": 
+			case "Resize ❎": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
 				{
 					public void actionPerformed(ActionEvent evt) 
