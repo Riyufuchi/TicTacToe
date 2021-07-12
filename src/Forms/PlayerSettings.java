@@ -21,7 +21,7 @@ import Utils.Helper;
 
 /**
  * @author Riyufuchi
- * @version 1.2
+ * @version 1.3
  * @since 1.0 - but really implemented in version 1.3.5
  */
 public class PlayerSettings extends JFrame
@@ -65,6 +65,7 @@ public class PlayerSettings extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
+    		label[i].setFont(FinalValues.DEFAULT_FONT);
             contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
     	}
     }
@@ -84,6 +85,7 @@ public class PlayerSettings extends JFrame
         {
         	comboBoxes[i] = new JComboBox<String>();
         	comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        	comboBoxes[i].setFont(FinalValues.DEFAULT_FONT);
         }
         for(i = 0; i < players.length; i++)
         {
@@ -92,8 +94,10 @@ public class PlayerSettings extends JFrame
         //TextFiled
         playerName = new JTextField();
         playerName.setText(players[0].getName());
+        playerName.setFont(FinalValues.DEFAULT_FONT);
         playerSymbol = new JTextField();
         playerSymbol.setText(players[0].getTeamSymbol());
+        playerSymbol.setFont(FinalValues.DEFAULT_FONT);
         //Buttons
         buttons = new JButton[buttonsTexts.length];
         for(i = 0; i < buttons.length; i++)
@@ -101,12 +105,14 @@ public class PlayerSettings extends JFrame
         	buttons[i] = new JButton();
         	buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
         	buttons[i].setText(buttonsTexts[i]);
+        	buttons[i].setFont(FinalValues.DEFAULT_FONT);
         }
         preview = new JButton();
         preview.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
         preview.setForeground(players[0].getTeamColor());
         preview.setText(players[0].getTeamSymbol());
         preview.setPreferredSize(new Dimension(50, 60));
+        preview.setFont(FinalValues.DEFAULT_FONT);
         contentPane.add(comboBoxes[0], Helper.setGBC(1, 1, gbc));
         contentPane.add(playerSymbol, Helper.setGBC(1, 3, gbc));
         contentPane.add(playerName, Helper.setGBC(1, 2, gbc));

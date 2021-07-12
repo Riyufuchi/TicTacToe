@@ -18,7 +18,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.3
+ * @version 1.4
  * @since 1.0
  */
 public class GameSettings extends JFrame
@@ -73,6 +73,7 @@ public class GameSettings extends JFrame
     	{
     		label[i] = new JLabel();
     		label[i].setText(labelTexts[i]);
+    		label[i].setFont(FinalValues.DEFAULT_FONT);
             contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
     	}
     }
@@ -82,8 +83,13 @@ public class GameSettings extends JFrame
 		String[] menu = {"?"};
 		String[] menuItems = {"How to select field size"};
 		mac = new JMenuAutoCreator(menu, menuItems);
+		for(int x = 0; x < mac.getJMenu().length; x++)
+		{
+			 mac.getJMenu()[x].setFont(FinalValues.DEFAULT_FONT);
+		}
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
+			mac.getMenuItem()[i].setFont(FinalValues.DEFAULT_FONT);
 			switch (mac.getMenuItem()[i].getName()) 
 			{
 				case "How to select field size":
@@ -118,6 +124,7 @@ public class GameSettings extends JFrame
         {
         	comboBoxes[i] = new JComboBox<Integer>();
         	comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+        	comboBoxes[i].setFont(FinalValues.DEFAULT_FONT);
         	contentPane.add(comboBoxes[i], Helper.setGBC(1, i + 1, gbc));
         }
         for(i = 0; i < 8; i++)
@@ -144,6 +151,7 @@ public class GameSettings extends JFrame
         {
         	texts[i] = new JTextField();
         	texts[i].setText(defaultPlayerNames[i]);
+        	texts[i].setFont(FinalValues.DEFAULT_FONT);
         	contentPane.add(texts[i], Helper.setGBC(1, i + 5, gbc));
         }
         texts[2].setEnabled(false);
@@ -155,6 +163,7 @@ public class GameSettings extends JFrame
             buttons[i] = new JButton();
             buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
             buttons[i].setText(buttonsTexts[i]);
+            buttons[i].setFont(FinalValues.DEFAULT_FONT);
         }
         contentPane.add(buttons[0], Helper.setGBC(0, 9, gbc));
         contentPane.add(buttons[1], Helper.setGBC(1, 9, gbc));

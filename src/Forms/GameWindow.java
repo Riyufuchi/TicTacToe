@@ -22,7 +22,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.4.4
+ * @version 1.5
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -126,7 +126,7 @@ public class GameWindow extends JFrame
 	private void generateMenu() 
 	{
 		String[] menu = { "Game options", "Player options", "About", "Debug"};
-		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize"};
+		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize", "Bigger points"};
 		if(this.isResizable())
 		{
 			menuItems[10] = "Allow resize ✓";
@@ -216,6 +216,35 @@ public class GameWindow extends JFrame
 					}
 				}); 
 				break;
+			case "Bigger points": 
+				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent evt) 
+					{
+						JMenuItem item = (JMenuItem)evt.getSource();
+						int size = 50;
+						if(item.getText().equals("Bigger points"))
+						{
+							item.setText("Bigger points ✓");
+							size = 60;
+						}
+						else
+						{
+							item.setText("Bigger points");
+						}
+						JButton[][] gameField = field.getField();
+						for (int y = 0; y < gameField.length; y++) 
+						{
+							for (int x = 0; x < gameField[0].length; x++) 
+							{
+								gameField[y][x].setPreferredSize(new Dimension(size, size));
+							} 
+						}
+						field.setGameField(gameField);
+						redraw();
+					}
+				}); 
+				break;
 			} 
 		} 
 		this.setJMenuBar(mac.getJMenuBar());
@@ -224,6 +253,13 @@ public class GameWindow extends JFrame
 	private void debug()
 	{
 		this.setResizable(true);
+	}
+	
+	public void redraw()
+	{
+		this.repaint();
+		this.scrollPane.revalidate();
+		this.pack();
 	}
 	
 	private void resize() 

@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
  * 
  * Projetct: ODB Manager
  * Created On: 21.07.2020
- * Last Edit: 21.07.2020
+ * Last Edit: 12.07.2021
  * @author Riyufuchi
  */
 
@@ -121,6 +121,11 @@ public class JMenuAutoCreator
 	public JMenuItem[] getMenuItem()
 	{
 		return menuItem;
+	}
+	
+	public JMenu[] getJMenu()
+	{
+		return menu;
 	}
 	
 	public JMenuBar getJMenuBar()
