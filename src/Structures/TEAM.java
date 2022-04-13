@@ -6,7 +6,7 @@ public enum TEAM
 {
 	NONE("", Color.BLACK),
 	X("❌", Color.BLUE),
-	O("⭘", Color.RED),
+	O("O", Color.RED), /*"⭘"*/
 	G("💼", Color.GRAY),
 	M("♖", Color.MAGENTA);
 	

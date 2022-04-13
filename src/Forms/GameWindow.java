@@ -22,7 +22,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.5
+ * @version 1.6
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -37,9 +37,6 @@ public class GameWindow extends JFrame
 	
 	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) 
 	{
-		this.setTitle(FinalValues.GAME_TITTLE);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
 		if(sizeY > 16)
 		{
 			this.setResizable(true);
@@ -56,32 +53,29 @@ public class GameWindow extends JFrame
 			this.players[i] = new Player(playerNames[i], teams[i + 1]);
 		}
 		this.field = new GameField(players, winRow, sizeX, sizeY);
-		setField();
-		generateMenu();
-		this.add(scrollPane);
 		this.setLocation(new Point(180, 80));
-		this.pack();
-		this.setVisible(true);
+		initGameWindow();
 	}
 	
 	public GameWindow(GameField field, Point location) 
 	{
+		this.field = field;
+		if(field.getSizeY() > 16)
+			this.setResizable(true);
+		else
+			this.setResizable(false);
+		this.setLocation(location);
+		initGameWindow();
+	}
+	
+	private void initGameWindow()
+	{
 		this.setTitle(FinalValues.GAME_TITTLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.field = field;
-		if(field.getSizeY() > 16)
-		{
-			this.setResizable(true);
-		}
-		else
-		{
-			this.setResizable(false);
-		}
 		setField();
 		generateMenu();
 		this.add(scrollPane);
-		this.setLocation(location);
 		this.pack();
 		this.setVisible(true);
 	}
@@ -119,7 +113,7 @@ public class GameWindow extends JFrame
 			} 
 		}
 		contentPane.revalidate();
-        scrollPane = new JScrollPane(contentPane);
+		scrollPane = new JScrollPane(contentPane);
 		field.setGameField(gameField);
 	}
 	

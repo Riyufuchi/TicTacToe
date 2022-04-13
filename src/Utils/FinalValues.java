@@ -21,7 +21,7 @@ public class FinalValues
 	public static final String CAPPED = "OCCUPIED";
 	//Misc
 	public static final String GAME_TITTLE = "TicTacToe - " + FinalValues.VERSION;
-	public static final String VERSION = "2.3";
+	public static final String VERSION = "2.4";
 	public static final String HOW_TO_PLAY = "Players take turns.\nFirst player that make line (horizontally, vertically or diagonally) of his team symbol wins.";
 	public static final String LICENSE = "Copyright (c) 2021 Riyufuchi\n\n" + 
 			"This licence is only aplicable for code with my copyright header and not for used libraries.\n" + 

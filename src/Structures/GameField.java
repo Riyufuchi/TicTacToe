@@ -9,30 +9,33 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.4
+ * @version 1.2.5
  * @since 1.3.3
  */
 public class GameField 
 {
-	public JButton[][] gameField;
+	private JButton[][] gameField;
 	private int capped, teamIndex, stepX, points, sizeX, sizeY, winRow;
+	private final int GAME_FIELD_AREA;
 	private Point point;
 	private Player[] players;
 	
 	public GameField(Player[] players, int winRow, int sizeX, int sizeY)
 	{
 		this.gameField = new JButton[sizeY][sizeX];
-		this.capped = teamIndex = points = stepX = 0;
-		this.point = new Point();
-		this.players = players;
-		this.sizeX = gameField[0].length;
-		this.sizeY = gameField.length;
-		this.winRow = winRow;
+		this.GAME_FIELD_AREA = gameField.length * gameField[0].length;
+		initGameField(players, winRow);
 	}
 	
 	public GameField(JButton[][] field, Player[] players, int winRow)
 	{
-		this.gameField = field;
+		this.gameField = field.clone();
+		this.GAME_FIELD_AREA = gameField.length * gameField[0].length;
+		initGameField(players, winRow);
+	}
+	
+	private void initGameField(Player[] players, int winRow)
+	{
 		this.capped = teamIndex = points = stepX = 0;
 		this.point = new Point();
 		this.players = players;
@@ -93,7 +96,7 @@ public class GameField
 		{
 			if(checkVertical() && checkHorizontal())
 			{
-				if(capped == gameField.length * gameField[0].length)
+				if(capped == GAME_FIELD_AREA)
 				{
 					endGame(new Player("Draw", TEAM.NONE));
 				}
