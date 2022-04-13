@@ -4,6 +4,7 @@
 # Files
 .settings/
 .classpath
+javadoc.xml
 
 # Log file
 *.log
