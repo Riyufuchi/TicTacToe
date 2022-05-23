@@ -7,7 +7,7 @@ public enum TEAM
 	NONE("", Color.BLACK),
 	X("❌", Color.BLUE),
 	O("O", Color.RED), /*"⭘"*/
-	G("💼", Color.GRAY),
+	G("D", Color.GRAY), /*💼*/
 	M("♖", Color.MAGENTA);
 	
 	public String teamSymbol;

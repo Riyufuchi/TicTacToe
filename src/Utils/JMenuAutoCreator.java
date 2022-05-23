@@ -26,7 +26,7 @@ public class JMenuAutoCreator
 		layoutButtonIndex(JMenuItemsPerSection(menuItemLabels));
 		generateMenu(menuLabels, menuItemLabels);
 	}
-    
+
 	private int[] JMenuItemsPerSection(String[] menuItemLabels)
 	{
 		int value = 0;

@@ -22,7 +22,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.6
+ * @version 1.7
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -130,41 +130,16 @@ public class GameWindow extends JFrame
 		{
 			switch (mac.getMenuItem()[i].getName()) 
 			{
-			case "Exit 🚪":	
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						System.exit(0);
-					}
-				}); 
+			case "Exit 🚪": mac.getMenuItem()[i].addActionListener(event -> System.exit(0));
 				break;
 			case "Customization": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						new PlayerSettings(field);
-					}
-				});
+				mac.getMenuItem()[i].addActionListener(event -> new PlayerSettings(field));
 				break;
 			case "Restart 🔁": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						field.restart();
-					}
-				}); 
+				mac.getMenuItem()[i].addActionListener(event -> field.restart());
 				break;
 			case "Resize ❎": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						resize();
-					}
-				}); 
+				mac.getMenuItem()[i].addActionListener(event -> resize());
 				break;
 			case "Statistics": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
@@ -183,22 +158,10 @@ public class GameWindow extends JFrame
 				}); 
 				break;
 			case "Lincense": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE);
-					}
-				}); 
+				mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE));
 				break;
 			case "How to play": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY);
-					}
-				}); 
+				mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
 				break;
 			case "Allow resize": 
 				mac.getMenuItem()[i].addActionListener(new ActionListener() 
