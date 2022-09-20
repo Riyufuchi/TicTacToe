@@ -9,7 +9,7 @@ import Utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.5
+ * @version 1.2.6
  * @since 1.3.3
  */
 public class GameField 
@@ -303,27 +303,21 @@ public class GameField
 			{
 				switch(symbol)
 				{
-					case "": 
-						gameField[y][x].setEnabled(false);
-						break;
-					default: 
+					case "" -> gameField[y][x].setEnabled(false);
+					default -> {
 						if (!gameField[y][x].getText().equals(symbol))
 						{
 							gameField[y][x].setEnabled(false);
 							gameField[y][x].setText("");
 						}
-						break;
+					}
 				}
 			} 
 		}
 		switch(symbol)
 		{
-			case "":
-				new ErrorWindow("Draw", "Field is filled up, but nobody won.");
-				break;
-			default:
-				new ErrorWindow("Victory for team " + player.getTeamSymbol(), "Player " + player.getName() + " made final point for team " + player.getTeamSymbol() + "\nTeam " + player.getTeamSymbol() + " is victorious.");
-				break;
+			case "" -> new ErrorWindow("Draw", "Field is filled up, but nobody won.");
+			default -> new ErrorWindow("Victory for team " + player.getTeamSymbol(), "Player " + player.getName() + " made final point for team " + player.getTeamSymbol() + "\nTeam " + player.getTeamSymbol() + " is victorious.");
 		}
 	}
 	

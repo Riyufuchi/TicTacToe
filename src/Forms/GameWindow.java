@@ -22,7 +22,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.7
+ * @version 1.8
  * @since 1.0
  */
 public class GameWindow extends JFrame
@@ -122,94 +122,56 @@ public class GameWindow extends JFrame
 		String[] menu = { "Game options", "Player options", "About", "Debug"};
 		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize", "Bigger points"};
 		if(this.isResizable())
-		{
 			menuItems[10] = "Allow resize ✓";
-		}
 		mac = new JMenuAutoCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
 			switch (mac.getMenuItem()[i].getName()) 
 			{
-			case "Exit 🚪": mac.getMenuItem()[i].addActionListener(event -> System.exit(0));
-				break;
-			case "Customization": 
-				mac.getMenuItem()[i].addActionListener(event -> new PlayerSettings(field));
-				break;
-			case "Restart 🔁": 
-				mac.getMenuItem()[i].addActionListener(event -> field.restart());
-				break;
-			case "Resize ❎": 
-				mac.getMenuItem()[i].addActionListener(event -> resize());
-				break;
-			case "Statistics": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+			case "Exit 🚪" -> mac.getMenuItem()[i].addActionListener(event -> System.exit(0));
+			case "Customization" -> mac.getMenuItem()[i].addActionListener(event -> new PlayerSettings(field));
+			case "Restart 🔁" -> mac.getMenuItem()[i].addActionListener(event -> field.restart());
+			case "Resize ❎" -> mac.getMenuItem()[i].addActionListener(event -> resize());
+			case "Statistics" -> mac.getMenuItem()[i].addActionListener(event -> {
+				int fields = field.getSizeX() * field.getSizeY();
+				if(about != null)
+					about.dispose();
+				about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n" 
+						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n" 
+						+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
+			}); 
+			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE));
+			case "How to play" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
+			case "Allow resize" -> mac.getMenuItem()[i].addActionListener(event -> {
+				this.setResizable(true);
+				((JMenuItem)event.getSource()).setText("Allow resize ✓");
+			}); 
+			case "Bigger points" -> mac.getMenuItem()[i].addActionListener(event -> {
+				JMenuItem item = (JMenuItem)event.getSource();
+				int size = 50;
+				if(item.getText().equals("Bigger points"))
 				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						int fields = field.getSizeX() * field.getSizeY();
-						if(about != null)
-						{
-							about.dispose();
-						}
-						about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n" 
-									+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
-									+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
-					}
-				}); 
-				break;
-			case "Lincense": 
-				mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE));
-				break;
-			case "How to play": 
-				mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
-				break;
-			case "Allow resize": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+					item.setText("Bigger points ✓");
+					size = 60;
+				}
+				else
 				{
-					public void actionPerformed(ActionEvent evt) 
-					{
-						debug();
-						((JMenuItem)evt.getSource()).setText("Allow resize ✓");
-					}
-				}); 
-				break;
-			case "Bigger points": 
-				mac.getMenuItem()[i].addActionListener(new ActionListener() 
+					item.setText("Bigger points");
+				}
+				JButton[][] gameField = field.getField();
+				for (int y = 0; y < gameField.length; y++) 
 				{
-					public void actionPerformed(ActionEvent evt) 
+					for (int x = 0; x < gameField[0].length; x++) 
 					{
-						JMenuItem item = (JMenuItem)evt.getSource();
-						int size = 50;
-						if(item.getText().equals("Bigger points"))
-						{
-							item.setText("Bigger points ✓");
-							size = 60;
-						}
-						else
-						{
-							item.setText("Bigger points");
-						}
-						JButton[][] gameField = field.getField();
-						for (int y = 0; y < gameField.length; y++) 
-						{
-							for (int x = 0; x < gameField[0].length; x++) 
-							{
-								gameField[y][x].setPreferredSize(new Dimension(size, size));
-							} 
-						}
-						field.setGameField(gameField);
-						redraw();
-					}
-				}); 
-				break;
+						gameField[y][x].setPreferredSize(new Dimension(size, size));
+					} 
+				}
+				field.setGameField(gameField);
+				redraw();
+			}); 
 			} 
 		} 
 		this.setJMenuBar(mac.getJMenuBar());
-	}
-	
-	private void debug()
-	{
-		this.setResizable(true);
 	}
 	
 	public void redraw()

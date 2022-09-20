@@ -18,7 +18,7 @@ import Utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.5
+ * @version 1.6
  * @since 1.0
  */
 public class GameSettings extends JFrame
@@ -87,19 +87,11 @@ public class GameSettings extends JFrame
 			mac.getMenuItem()[i].setFont(FinalValues.DEFAULT_FONT);
 			switch (mac.getMenuItem()[i].getName()) 
 			{
-				case "How to select field size":
-					mac.getMenuItem()[i].addActionListener(new ActionListener() 
-					{
-						public void actionPerformed(ActionEvent evt) 
-						{
-							new ErrorWindow("How to select sizes", "1. Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).\n"
+				case "How to select field size" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to select sizes", "1. Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).\n"
 									+ "2. Select size according to your screen by try and error method.\n"
-									+ "3. But just in case it wouldnt fit, there would be scroll bars, so you can navigate around the game field.");
-						}
-					}); 
-					break;
-			} 
-		} 
+									+ "3. But just in case it wouldnt fit, there would be scroll bars, so you can navigate around the game field."));
+			}
+		}
 		this.setJMenuBar(mac.getJMenuBar());
 	}
 
@@ -180,20 +172,14 @@ public class GameSettings extends JFrame
 				}
 			}
 		});
-		comboBoxes[3].addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
+		comboBoxes[3].addActionListener(event -> { 
 				int i = 0;
 				for (i = 0; i < texts.length; i++)
-				{
 					texts[i].setEnabled(false);
-				}
-				for (i = 0; i < (int) comboBoxes[3].getSelectedItem(); i++) {
+				for (i = 0; i < (int) comboBoxes[3].getSelectedItem(); i++)
 					texts[i].setEnabled(true);
-				}
 			}
-		});
+		);
 	}
 
 	private void startGame()

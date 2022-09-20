@@ -5,6 +5,7 @@
 .settings/
 .classpath
 javadoc.xml
+.project
 
 # Log file
 *.log
