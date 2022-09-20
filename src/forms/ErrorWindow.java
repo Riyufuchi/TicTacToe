@@ -1,4 +1,4 @@
-package Forms;
+package forms;
 
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import Utils.FinalValues;
+import utils.FinalValues;
 
 /** Copyright Header
  * 

@@ -1,4 +1,4 @@
-package Forms;
+package forms;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -13,12 +13,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import Structures.GameField;
-import Structures.Player;
-import Structures.TEAM;
-import Utils.FinalValues;
-import Utils.Helper;
-import Utils.JMenuAutoCreator;
+import structures.GameField;
+import structures.Player;
+import structures.TEAM;
+import utils.FinalValues;
+import utils.Helper;
+import utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi

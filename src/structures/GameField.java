@@ -1,11 +1,11 @@
-package Structures;
+package structures;
 
 import java.awt.Point;
 
 import javax.swing.JButton;
 
-import Forms.ErrorWindow;
-import Utils.FinalValues;
+import forms.ErrorWindow;
+import utils.FinalValues;
 
 /**
  * @author Riyufuchi

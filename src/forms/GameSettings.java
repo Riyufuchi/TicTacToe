@@ -1,4 +1,4 @@
-package Forms;
+package forms;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Utils.FinalValues;
-import Utils.Helper;
-import Utils.JMenuAutoCreator;
+import utils.FinalValues;
+import utils.Helper;
+import utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi

@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -25,7 +25,7 @@ public class FinalValues
 	public static final String HOW_TO_PLAY = "Players take turns.\nFirst player that make line (horizontally, vertically or diagonally) of his team symbol wins.";
 	public static final String LICENSE = "Copyright (c) 2021 Riyufuchi\n\n" + 
 			"This licence is only aplicable for code with my copyright header and not for used libraries.\n" + 
-			"The code for this software is public for DEMOSTRATIONAL, PRESTATIONAL and EDUCATONAL purposes.\n" + 
+			"The code for this software is public for DEMOSTRATIONAL, PRESTATIONAL and EDUCATIONAL purposes.\n" + 
 			"This software can be used for personal use (without limitation the rights to use, copy and modify), but not for redistribution with goal of making profit.\n" + 
 			"If modification are made end user have to be notified.\n" + 
 			"\n" + 

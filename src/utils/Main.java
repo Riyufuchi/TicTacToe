@@ -1,6 +1,6 @@
-package Utils;
+package utils;
 
-import Forms.GameSettings;
+import forms.GameSettings;
 
 /**
  * @author Riyufuchi

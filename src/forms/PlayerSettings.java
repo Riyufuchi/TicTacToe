@@ -1,4 +1,4 @@
-package Forms;
+package forms;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,10 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Structures.GameField;
-import Structures.Player;
-import Utils.FinalValues;
-import Utils.Helper;
+import structures.GameField;
+import structures.Player;
+import utils.FinalValues;
+import utils.Helper;
 
 /**
  * @author Riyufuchi
