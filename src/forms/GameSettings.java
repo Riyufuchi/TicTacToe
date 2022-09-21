@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -18,7 +19,7 @@ import utils.JMenuAutoCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.6
+ * @version 1.7
  * @since 1.0
  */
 public class GameSettings extends JFrame
@@ -78,9 +79,10 @@ public class GameSettings extends JFrame
 		String[] menu = {"?"};
 		String[] menuItems = {"How to select field size"};
 		mac = new JMenuAutoCreator(menu, menuItems);
-		for(int x = 0; x < mac.getJMenu().length; x++)
+		JMenuItem[] jmi = mac.getMenuItem();
+		for(int x = 0; x < jmi.length; x++)
 		{
-			 mac.getJMenu()[x].setFont(FinalValues.DEFAULT_FONT);
+			jmi[x].setFont(FinalValues.DEFAULT_FONT);
 		}
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
