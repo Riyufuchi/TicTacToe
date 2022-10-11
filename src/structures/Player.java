@@ -42,4 +42,9 @@ public class Player
 	{
 		return this.team.teamColor;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

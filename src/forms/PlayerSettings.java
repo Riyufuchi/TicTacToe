@@ -2,132 +2,104 @@ package forms;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import structures.GameField;
 import structures.Player;
+import utils.FactoryComponent;
 import utils.FinalValues;
-import utils.Helper;
 
 /**
+ * 
  * @author Riyufuchi
- * @version 1.4
+ * @version 1.5
  * @since 1.0 - but really implemented in version 1.3.5
  */
-public class PlayerSettings extends JFrame
+public class PlayerSettings extends Window
 {
 	private static final long serialVersionUID = 1L;
 	private JButton[] buttons;
-	private JPanel contentPane;
 	private GameField field;
 	private JTextField playerName, playerSymbol;
 	private JButton preview;
 	private Player[] players;
-	private JComboBox<String>[] comboBoxes;
-	private JLabel[] label;
+	private JComboBox<Player>[] comboBoxes;
+	private boolean save;
 	private final String[] labelTexts = { "Player:", "Name:", "Team Symbol:", "Color:", "Preview/Default: " };
 	private final String[] buttonsTexts = { "Color", "Cancel", "Save changes" };
-	private boolean save;
-	private GridBagConstraints gbc;
-
+	
 	public PlayerSettings(GameField field)
 	{
-		this.setTitle("Player settings");
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		super("Player setting", 300, 300, false, true, false);
 		this.field = field;
 		this.players = field.getAllPlayers();
 		this.save = true;
-		setUI();
-		setLabels();
+		createLabels(labelTexts);
+		setUI(getPane());
 		createEvents();
-		this.setAlwaysOnTop(true);
-		this.add(contentPane);
-		this.pack();
-		this.setVisible(true);
 	}
 
-	private void setLabels()
-	{
-		label = new JLabel[labelTexts.length];
-		for (int i = 0; i < labelTexts.length; i++)
-		{
-			label[i] = new JLabel();
-			label[i].setText(labelTexts[i]);
-			label[i].setFont(FinalValues.DEFAULT_FONT);
-			contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
-		}
+	@Override
+	protected void setComponents(JPanel content) {
+		//setUI(content);
+		//createEvents();
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	private void setUI()
+	private void setUI(JPanel content)
 	{
-		contentPane = new JPanel();
-		contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
-		contentPane.setLayout(new GridBagLayout());
-		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 		// ComboBoxes
 		comboBoxes = new JComboBox[1];
 		int i = 0;
 		for (i = 0; i < comboBoxes.length; i++)
 		{
-			comboBoxes[i] = new JComboBox<String>();
-			comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+			comboBoxes[i] = FactoryComponent.<Player>createCombobox(players);
 			comboBoxes[i].setFont(FinalValues.DEFAULT_FONT);
 		}
+		/*
 		for (i = 0; i < players.length; i++)
-		{
 			comboBoxes[0].addItem(players[i].getName());
-		}
+			*/
 		// TextFiled
-		playerName = new JTextField();
-		playerName.setText(players[0].getName());
+		playerName = FactoryComponent.newTextField(players[0].getName());
 		playerName.setFont(FinalValues.DEFAULT_FONT);
-		playerSymbol = new JTextField();
-		playerSymbol.setText(players[0].getTeamSymbol());
+		playerSymbol = FactoryComponent.newTextField(players[0].getTeamSymbol());
 		playerSymbol.setFont(FinalValues.DEFAULT_FONT);
 		// Buttons
 		buttons = new JButton[buttonsTexts.length];
 		for (i = 0; i < buttons.length; i++)
 		{
-			buttons[i] = new JButton();
-			buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-			buttons[i].setText(buttonsTexts[i]);
+			buttons[i] = FactoryComponent.createButton(buttonsTexts[i], null);
 			buttons[i].setFont(FinalValues.DEFAULT_FONT);
 		}
-		preview = new JButton();
-		preview.setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
+		preview = FactoryComponent.createButton(players[0].getName(), null);
 		preview.setForeground(players[0].getTeamColor());
 		preview.setText(players[0].getTeamSymbol());
-		preview.setPreferredSize(new Dimension(50, 60));
+		preview.setPreferredSize(new Dimension(60, 60));
 		preview.setFont(FinalValues.DEFAULT_FONT);
-		contentPane.add(comboBoxes[0], Helper.setGBC(1, 1, gbc));
-		contentPane.add(playerSymbol, Helper.setGBC(1, 3, gbc));
-		contentPane.add(playerName, Helper.setGBC(1, 2, gbc));
-		contentPane.add(preview, Helper.setGBC(1, 5, gbc));
-		contentPane.add(buttons[0], Helper.setGBC(1, 4, gbc));
-		contentPane.add(buttons[1], Helper.setGBC(0, 6, gbc));
-		contentPane.add(buttons[2], Helper.setGBC(1, 6, gbc));
+		content.add(comboBoxes[0], getGBC(1, 0));
+		content.add(playerName, getGBC(1, 1));
+		content.add(playerSymbol, getGBC(1, 2));
+		content.add(buttons[0], getGBC(1, 3));
+		content.add(preview, getGBC(1, 4));
+		content.add(buttons[1], getGBC(0, 5));
+		content.add(buttons[2], getGBC(1, 5));
 	}
 
 	private void createEvents()
 	{
 		buttons[0].addActionListener(event -> selectColor());
-		buttons[1].addActionListener(event -> saveExit());
+		buttons[1].addActionListener(event -> this.dispose());
 		buttons[2].addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent evt)
 			{
 				save = true;
@@ -148,20 +120,21 @@ public class PlayerSettings extends JFrame
 					players[comboBoxes[0].getSelectedIndex()].getTeam().teamSymbol = playerSymbol.getText();
 					players[comboBoxes[0].getSelectedIndex()].setColor(preview.getForeground());
 					field.setPlayer(players[comboBoxes[0].getSelectedIndex()], comboBoxes[0].getSelectedIndex());
-					sucessfullSave();
 					preview.setText(playerSymbol.getText());
+					sucessfullSave();
 				}
 			}
 		});
 		comboBoxes[0].addActionListener(new ActionListener()
 		{
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				resetSaveButton();
 				playerName.setText(players[comboBoxes[0].getSelectedIndex()].getName());
 				playerSymbol.setText(players[comboBoxes[0].getSelectedIndex()].getTeamSymbol());
 				preview.setForeground(players[comboBoxes[0].getSelectedIndex()].getTeamColor());
 				preview.setText(players[comboBoxes[0].getSelectedIndex()].getTeamSymbol());
+				resetSaveButton();
 			}
 		});
 	}
@@ -180,15 +153,11 @@ public class PlayerSettings extends JFrame
 		this.pack();
 	}
 
-	private void saveExit()
-	{
-		this.dispose();
-	}
-
 	private void selectColor()
 	{
 		preview.setForeground(JColorChooser.showDialog(this,
 				"Choose color for player " + players[comboBoxes[0].getSelectedIndex()].getName(),
 				players[comboBoxes[0].getSelectedIndex()].getTeamColor()));
 	}
+
 }

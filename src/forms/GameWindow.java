@@ -1,57 +1,42 @@
 package forms;
 
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import structures.GameField;
 import structures.Player;
 import structures.TEAM;
+
 import utils.FinalValues;
-import utils.Helper;
-import utils.JMenuAutoCreator;
+import utils.JMenuCreator;
 
 /**
+ * 
  * @author Riyufuchi
- * @version 1.8
+ * @version 1.9
  * @since 1.0
  */
-public class GameWindow extends JFrame
+public class GameWindow extends Window
 {
 	private static final long serialVersionUID = 1L;
-	private JScrollPane scrollPane;
 	private GameField field;
 	private ErrorWindow about;
-	private GridBagConstraints gbc;
-	private JMenuAutoCreator mac;
+	private JMenuCreator mac;
 	private Player[] players;
 	
-	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) 
-	{
+	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) {
+		super(FinalValues.GAME_TITTLE, 600, 600, false, true, true);
 		if(sizeY > 16)
-		{
 			this.setResizable(true);
-			this.setMinimumSize(new Dimension(800, 600));
-		}
-		else
-		{
-			this.setResizable(false);
-		}
 		this.players = new Player[playerNames.length];
 		TEAM[] teams = TEAM.values();
 		for(int i = 0; i < players.length; i++)
-		{
 			this.players[i] = new Player(playerNames[i], teams[i + 1]);
-		}
 		this.field = new GameField(players, winRow, sizeX, sizeY);
 		this.setLocation(new Point(180, 80));
 		initGameWindow();
@@ -59,62 +44,49 @@ public class GameWindow extends JFrame
 	
 	public GameWindow(GameField field, Point location) 
 	{
+		super(FinalValues.GAME_TITTLE, 800, 600, false, false, true);
 		this.field = field;
 		if(field.getSizeY() > 16)
 			this.setResizable(true);
-		else
-			this.setResizable(false);
 		this.setLocation(location);
 		initGameWindow();
 	}
 	
 	private void initGameWindow()
 	{
-		this.setTitle(FinalValues.GAME_TITTLE);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		setField();
-		generateMenu();
-		this.add(scrollPane);
-		this.pack();
-		this.setVisible(true);
+		setField(getPane());;
 	}
-	
-	private void setField() 
+
+	@Override
+	protected void setComponents(JPanel content) {
+		generateMenu();
+	}
+
+	private void setField(JPanel content) 
 	{
-		JPanel contentPane = new JPanel();
-		contentPane.setLayout(new GridBagLayout());
-		contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
-		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 		JButton[][] gameField = field.getField();
 		for (int y = 0; y < gameField.length; y++) 
 		{
 			for (int x = 0; x < gameField[0].length; x++) 
 			{
 				gameField[y][x] = new JButton();
-				gameField[y][x].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
 				gameField[y][x].setName(String.valueOf(x + ";" + y));
-				gameField[y][x].setPreferredSize(new Dimension(50, 50));
-				gameField[y][x].setFont(FinalValues.ERROR_WINDOW_FONT);
-				//gameField[y][x].setText(x + ";" + y);
-				gameField[y][x].addActionListener(new ActionListener() 
-				{
-					public void actionPerformed(ActionEvent e) 
-					{
-						String point = ((JButton)e.getSource()).getName();
-						if(!(point.equals(FinalValues.CAPPED)))
-						{
-							field.capPoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
-						}
-					}
-				}); 
-				contentPane.add(gameField[y][x], Helper.setGBC(x, y, gbc));
+				gameField[y][x].setPreferredSize(new Dimension(60, 60));
+				gameField[y][x].setFont(FinalValues.DEFAULT_FONT);
+				gameField[y][x].addActionListener(e -> buttonEvent(e));
+				content.add(gameField[y][x], getGBC(x, y));
 			} 
 		}
-		contentPane.revalidate();
-		scrollPane = new JScrollPane(contentPane);
 		field.setGameField(gameField);
+	}
+	
+	private void buttonEvent(ActionEvent e)
+	{
+		String point = ((JButton)e.getSource()).getName();
+		if(!(point.equals(FinalValues.CAPPED)))
+		{
+			field.capPoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
+		}
 	}
 	
 	private void generateMenu() 
@@ -123,7 +95,7 @@ public class GameWindow extends JFrame
 		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize", "Bigger points"};
 		if(this.isResizable())
 			menuItems[10] = "Allow resize ✓";
-		mac = new JMenuAutoCreator(menu, menuItems);
+		mac = new JMenuCreator(menu, menuItems);
 		for (int i = 0; i < mac.getMenuItem().length; i++) 
 		{
 			switch (mac.getMenuItem()[i].getName()) 
@@ -140,7 +112,7 @@ public class GameWindow extends JFrame
 						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n" 
 						+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
 			}); 
-			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 800, 600, FinalValues.LICENSE));
+			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 1000, 400, FinalValues.LICENSE));
 			case "How to play" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
 			case "Allow resize" -> mac.getMenuItem()[i].addActionListener(event -> {
 				this.setResizable(true);
@@ -148,11 +120,11 @@ public class GameWindow extends JFrame
 			}); 
 			case "Bigger points" -> mac.getMenuItem()[i].addActionListener(event -> {
 				JMenuItem item = (JMenuItem)event.getSource();
-				int size = 50;
+				int size = 60;
 				if(item.getText().equals("Bigger points"))
 				{
 					item.setText("Bigger points ✓");
-					size = 60;
+					size = 70;
 				}
 				else
 				{
@@ -170,14 +142,14 @@ public class GameWindow extends JFrame
 				redraw();
 			}); 
 			} 
-		} 
+		}
 		this.setJMenuBar(mac.getJMenuBar());
 	}
 	
 	public void redraw()
 	{
 		this.repaint();
-		this.scrollPane.revalidate();
+		getPane().revalidate();
 		this.pack();
 	}
 	

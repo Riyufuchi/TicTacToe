@@ -1,34 +1,35 @@
 package utils;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * Copyright Header
- * 
- * Project: ODB Manager
  * Created On: 21.07.2020<br>
- * Last Edit: 20.09.2022
+ * Last Edit: 11.10.2022
+ * <hr>
+ * Tool for easier initialization of JMenuBar.
+ * <hr>
  * @author Riyufuchi
- * @version 1.3
+ * @version 1.5
  * @since 1.0 
  */
-
-public class JMenuAutoCreator 
+public class JMenuCreator 
 {
 	private int[] numberOfMenus;
 	private JMenuBar menuBar;
 	private JMenu[] menu;
-	private JMenuItem[] menuItem;
+	private JMenuItem[] menuItems;
 	private int lineSeparator;
 	
-	public JMenuAutoCreator(String[] menuLabels, String[] menuItemLabels)
+	public JMenuCreator(String[] menuLabels, String[] menuItemLabels)
 	{
 		initialize(menuLabels, menuItemLabels, 2);
 	}
 	
-	public JMenuAutoCreator(String[] menuLabels, String[] menuItemLabels, int lineSeparator)
+	public JMenuCreator(String[] menuLabels, String[] menuItemLabels, int lineSeparator)
 	{
 		initialize(menuLabels, menuItemLabels, lineSeparator);
 	}
@@ -81,7 +82,7 @@ public class JMenuAutoCreator
 		for(int i = 0; i < menuItemLabels.length; i++)
 			if(menuItemLabels[i].equals(""))
 				MIL_length--;
-		menuItem = new JMenuItem[MIL_length];
+		menuItems = new JMenuItem[MIL_length];
 		for(int i = 0; i < menu.length; i++)
 			menu[i] = new JMenu(menuLabels[i]);
 		int arrayIndex = 0;
@@ -89,8 +90,8 @@ public class JMenuAutoCreator
 		{
 			if(menuItemLabels[i].equals(""))
 				i++;
-			menuItem[arrayIndex] = new JMenuItem(menuItemLabels[i]);
-			menuItem[arrayIndex].setName(menuItemLabels[i]);
+			menuItems[arrayIndex] = new JMenuItem(menuItemLabels[i]);
+			menuItems[arrayIndex].setName(menuItemLabels[i]);
 			arrayIndex++;
 		}
 		int indexValueHolder = 0;
@@ -101,21 +102,38 @@ public class JMenuAutoCreator
 			{
 				if(lineSeparator == index)
 					menu[x].addSeparator();
-				menu[x].add(menuItem[index]);
+				menu[x].add(menuItems[index]);
 				menuBar.add(menu[x]);
 			}
 			indexValueHolder = index;
 		}
 	}
 	
-	public void setMenuItem(JMenuItem[] jmi)
+	public void setItemAction(int i, ActionListener al)
 	{
-		this.menuItem = jmi;
+		menuItems[i].addActionListener(al);
 	}
 	
+	public int getNumberOfMenuItems()
+	{
+		return menuItems.length;
+	}
+	
+	public String getItemName(int i)
+	{
+		return menuItems[i].getName();
+	}
+	
+	@Deprecated
+	public void setMenuItem(JMenuItem[] jmi)
+	{
+		this.menuItems = jmi;
+	}
+	
+	@Deprecated
 	public JMenuItem[] getMenuItem()
 	{
-		return menuItem;
+		return menuItems;
 	}
 	
 	public JMenuBar getJMenuBar()

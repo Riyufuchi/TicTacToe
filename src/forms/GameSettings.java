@@ -1,84 +1,109 @@
 package forms;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import utils.DialogHelper;
+import utils.FactoryComponent;
 import utils.FinalValues;
-import utils.Helper;
-import utils.JMenuAutoCreator;
+import utils.JMenuCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.7
+ * @version 1.8
  * @since 1.0
  */
-public class GameSettings extends JFrame
-{
+public class GameSettings extends Window {
+
 	private static final long serialVersionUID = 1L;
 	private JButton[] buttons;
-	private JPanel contentPane;
-	private JLabel[] label;
 	private JTextField[] texts;
-	private JComboBox<Integer>[] comboBoxes;
-	private JMenuAutoCreator mac;
-	private final String[] defaultPlayerNames = {"X", "O", "G", "M"};
-	private final String[] labelTexts = {"Game field width:", "Game field height:", "Win row:", "Number of players: ", "Player1 name:", "Player2 name:", "Player3 name:", "Player4 name:"};
-	private final String[] buttonsTexts = {"Cancel", "Start game"};
-	private GridBagConstraints gbc;
-
+	private JComboBox<Integer> fieldWith, fieldHeight, winRow, numOfPlayers;
+	private JMenuCreator mac;
+	
 	public GameSettings()
 	{
-		init();
+		super("TicTacToe - Settings", 300, 400, false, false, false);
 	}
-
+	
 	public GameSettings(Point location)
 	{
-		init();
+		super("TicTacToe - Settings", 300, 400, false, false, false);
 		this.setLocation(location);
 	}
-
-	private void init()
+	
+	@Override
+	protected void setComponents(JPanel content)
 	{
-		this.setTitle("TicTacToe - Settings");
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-		setUI();
-		setLabels();
-		setEvents();
+		createLabels(FinalValues.SETTINGS_TEXTS);
 		generateMenu();
-		this.add(contentPane);
-		this.pack();
-		this.setVisible(true);
+		setUI(content);
+		setEvents();
 	}
-
-	private void setLabels()
+	
+	//@SuppressWarnings("unchecked")
+	private void setUI(JPanel content)
 	{
-		label = new JLabel[labelTexts.length];
-		for (int i = 0; i < labelTexts.length; i++)
+		int i = 0;
+		int size = 6;
+		//ComboBox
+		Integer[] fieldSize = new Integer[15];
+		for(int x = 0; x < fieldSize.length; x++)
 		{
-			label[i] = new JLabel();
-			label[i].setText(labelTexts[i]);
-			label[i].setFont(FinalValues.DEFAULT_FONT);
-			contentPane.add(label[i], Helper.setGBC(0, i + 1, gbc));
+			size += 2;
+			fieldSize[x] = size;
 		}
+		fieldWith = FactoryComponent.<Integer>createCombobox(fieldSize);
+		fieldHeight = FactoryComponent.<Integer>createCombobox(fieldSize);
+		Integer[] rows = new Integer[8];
+		rows[0] = 3;
+		size = 4;
+		int max = rows.length;
+		for(int x = 1; x < max; x++)
+		{
+			rows[x] = size;
+			size += 2;
+		}
+		winRow = FactoryComponent.<Integer>createCombobox(rows);
+		winRow.setSelectedIndex(1);
+		Integer[] players = {2, 3 , 4};
+		numOfPlayers = FactoryComponent.<Integer>createCombobox(players);
+		content.add(fieldWith, getGBC(1, 0));
+		content.add(fieldHeight, getGBC(1, 1));
+		content.add(winRow, getGBC(1, 2));
+		content.add(numOfPlayers, getGBC(1, 3));
+		// TextField
+		texts = new JTextField[FinalValues.DEFAULT_PLAYER_NAMES.length];
+		for (i = 0; i < texts.length; i++)
+		{
+			texts[i] = FactoryComponent.newTextField(FinalValues.DEFAULT_PLAYER_NAMES[i]);
+			texts[i].setFont(FinalValues.DEFAULT_FONT);
+			content.add(texts[i], getGBC(1, i + 4));
+		}
+		texts[2].setEnabled(false);
+		texts[3].setEnabled(false);
+		// Buttons
+		buttons = new JButton[FinalValues.SETTINGS_BUTTONS_TEXTS.length];
+		for (i = 0; i < buttons.length; i++)
+		{
+			buttons[i] = FactoryComponent.createButton(FinalValues.SETTINGS_BUTTONS_TEXTS[i], null);
+			buttons[i].setFont(FinalValues.DEFAULT_FONT);
+		}
+		content.add(buttons[0], getGBC(0, 9));
+		content.add(buttons[1], getGBC(1, 9));
+		this.pack();
 	}
-
+	
 	private void generateMenu() 
 	{
 		String[] menu = {"?"};
 		String[] menuItems = {"How to select field size"};
-		mac = new JMenuAutoCreator(menu, menuItems);
+		mac = new JMenuCreator(menu, menuItems);
 		JMenuItem[] jmi = mac.getMenuItem();
 		for(int x = 0; x < jmi.length; x++)
 		{
@@ -96,89 +121,24 @@ public class GameSettings extends JFrame
 		}
 		this.setJMenuBar(mac.getJMenuBar());
 	}
-
-	@SuppressWarnings("unchecked")
-	private void setUI()
-	{
-		contentPane = new JPanel();
-		contentPane.setBackground(FinalValues.DEFAULT_PANE_BACKGROUND);
-		contentPane.setLayout(new GridBagLayout());
-		gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		int i = 0;
-		int size = 6;
-		// ComboBox
-		comboBoxes = new JComboBox[4];
-		for (i = 0; i < comboBoxes.length; i++)
-		{
-			comboBoxes[i] = new JComboBox<Integer>();
-			comboBoxes[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-			comboBoxes[i].setFont(FinalValues.DEFAULT_FONT);
-			contentPane.add(comboBoxes[i], Helper.setGBC(1, i + 1, gbc));
-		}
-		comboBoxes[2].addItem(3);
-		for (i = 0; i < 15; i++)
-		{
-			size += 2;
-			comboBoxes[0].addItem(size);
-			comboBoxes[1].addItem(size);
-		}
-		size = 4;
-		for (i = 0; i < 7; i++)
-		{
-			comboBoxes[2].addItem(size);
-			size += 2;
-		}
-		comboBoxes[2].setSelectedIndex(1);
-		for (i = 2; i < 5; i++)
-		{
-			comboBoxes[3].addItem(i);
-		}
-		// TextField
-		texts = new JTextField[defaultPlayerNames.length];
-		for (i = 0; i < texts.length; i++)
-		{
-			texts[i] = new JTextField();
-			texts[i].setText(defaultPlayerNames[i]);
-			texts[i].setFont(FinalValues.DEFAULT_FONT);
-			contentPane.add(texts[i], Helper.setGBC(1, i + 5, gbc));
-		}
-		texts[2].setEnabled(false);
-		texts[3].setEnabled(false);
-		// Buttons
-		buttons = new JButton[buttonsTexts.length];
-		for (i = 0; i < buttons.length; i++)
-		{
-			buttons[i] = new JButton();
-			buttons[i].setBackground(FinalValues.DEFAULT_BUTTON_BACKGROUND);
-			buttons[i].setText(buttonsTexts[i]);
-			buttons[i].setFont(FinalValues.DEFAULT_FONT);
-		}
-		contentPane.add(buttons[0], Helper.setGBC(0, 9, gbc));
-		contentPane.add(buttons[1], Helper.setGBC(1, 9, gbc));
-	}
-
+	
 	private void setEvents()
 	{
 		buttons[0].addActionListener(event -> System.exit(0));
 		buttons[1].addActionListener(event -> startGame());
-		comboBoxes[1].addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
+		fieldHeight.addActionListener(event -> {
+			if (fieldHeight.getSelectedIndex() >= 6)
 			{
-				if (comboBoxes[1].getSelectedIndex() > 2)
-				{
-					new ErrorWindow("Warning",
-							"Selected height is 20 and above and it might not fit into your screen, but if it is not going to fit, there are going to be scroll bars, so you can navigate around the game field.\n"
-									+ "Height 20 is maximum recommended for Full HD 27 inch screens for ability to see the whole game field (width can be maximum).");
-				}
+				String msg = "Selected height is 20 and above and it might not fit into your screen.\nBut if it is not going to fit, there will be scroll bars,\nso you can navigate around the game field.\n"
+					+ "Height 20 is maximum recommended for Full HD 27 inch screens (width can be maximum).";
+				DialogHelper.warningDialog(this, msg, "Warning");
 			}
 		});
-		comboBoxes[3].addActionListener(event -> { 
+		numOfPlayers.addActionListener(event -> { 
 				int i = 0;
 				for (i = 0; i < texts.length; i++)
 					texts[i].setEnabled(false);
-				for (i = 0; i < (int) comboBoxes[3].getSelectedItem(); i++)
+				for (i = 0; i < (int) numOfPlayers.getSelectedItem(); i++)
 					texts[i].setEnabled(true);
 			}
 		);
@@ -186,18 +146,18 @@ public class GameSettings extends JFrame
 
 	private void startGame()
 	{
-		String[] names = new String[(int) comboBoxes[3].getSelectedItem()];
+		String[] names = new String[(int) numOfPlayers.getSelectedItem()];
 		for (int i = 0; i < names.length; i++)
 		{
 			if (texts[i].getText().equals(""))
 			{
-				names[i] = defaultPlayerNames[i];
+				names[i] = FinalValues.DEFAULT_PLAYER_NAMES[i];
 			}
 			names[i] = texts[i].getText();
 		}
-		int width = (int) comboBoxes[0].getSelectedItem();
-		int height = (int) comboBoxes[1].getSelectedItem();
-		int intWinRow = (int) comboBoxes[2].getSelectedItem();
+		int width = (int) fieldWith.getSelectedItem();
+		int height = (int) fieldHeight.getSelectedItem();
+		int intWinRow = (int) winRow.getSelectedItem();
 		if ((intWinRow < width - 1) && (intWinRow < height - 1))
 		{
 			new GameWindow(width, height, intWinRow, names);
@@ -209,4 +169,5 @@ public class GameSettings extends JFrame
 					"Win row must fit into the field, please select a bigger field size or smaler win row.");
 		}
 	}
+
 }
