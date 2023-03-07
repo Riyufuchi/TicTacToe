@@ -1,7 +1,9 @@
 package utils;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  * Created On: 17.07.2022<br>
@@ -29,8 +31,11 @@ public class DialogHelper
 		JOptionPane.showMessageDialog(parentFrame, message, title, JOptionPane.WARNING_MESSAGE);
 	}
 	
-	public static void exceptionDialog(JFrame parentFrame, Exception exception)
+	public static void textAreaDialog(String text, String title)
 	{
-		JOptionPane.showMessageDialog(parentFrame, exception.getMessage(), exception.getClass().getSimpleName(), JOptionPane.ERROR_MESSAGE);
+		JTextArea pozice = FactoryComponent.newTextArea(text);
+		pozice.setBounds(0, 0, 300, 50);
+		final JComponent[] inputs = new JComponent[] { pozice };
+		JOptionPane.showMessageDialog(null, inputs, title, JOptionPane.PLAIN_MESSAGE);
 	}
 }

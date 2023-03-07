@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public final class FactoryComponent
@@ -50,5 +51,18 @@ public final class FactoryComponent
 	public static void errorDialog(JFrame parentFrame, String message, String title)
 	{
 		JOptionPane.showMessageDialog(parentFrame, message, title, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public static JTextArea newTextArea(String text)
+	{
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setText(text);
+		//textArea.setBackground(AppColors.DEFAULT_PANE_BACKGROUND);
+		//textArea.setForeground(Color.LIGHT_GRAY);
+		//textArea.setFont(AppFonts.MAIN);
+		return textArea;
 	}
 }

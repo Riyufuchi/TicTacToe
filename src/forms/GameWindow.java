@@ -11,12 +11,12 @@ import javax.swing.JPanel;
 import structures.GameField;
 import structures.Player;
 import structures.TEAM;
-
+import utils.DialogHelper;
 import utils.FinalValues;
 import utils.JMenuCreator;
 
 /**
- * 
+ *
  * @author Riyufuchi
  * @version 1.9
  * @since 1.0
@@ -28,7 +28,7 @@ public class GameWindow extends Window
 	private ErrorWindow about;
 	private JMenuCreator mac;
 	private Player[] players;
-	
+
 	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) {
 		super(FinalValues.GAME_TITTLE, 600, 600, false, true, true);
 		if(sizeY > 16)
@@ -41,8 +41,8 @@ public class GameWindow extends Window
 		this.setLocation(new Point(180, 80));
 		initGameWindow();
 	}
-	
-	public GameWindow(GameField field, Point location) 
+
+	public GameWindow(GameField field, Point location)
 	{
 		super(FinalValues.GAME_TITTLE, 800, 600, false, false, true);
 		this.field = field;
@@ -51,7 +51,7 @@ public class GameWindow extends Window
 		this.setLocation(location);
 		initGameWindow();
 	}
-	
+
 	private void initGameWindow()
 	{
 		setField(getPane());;
@@ -62,12 +62,12 @@ public class GameWindow extends Window
 		generateMenu();
 	}
 
-	private void setField(JPanel content) 
+	private void setField(JPanel content)
 	{
 		JButton[][] gameField = field.getField();
-		for (int y = 0; y < gameField.length; y++) 
+		for (int y = 0; y < gameField.length; y++)
 		{
-			for (int x = 0; x < gameField[0].length; x++) 
+			for (int x = 0; x < gameField[0].length; x++)
 			{
 				gameField[y][x] = new JButton();
 				gameField[y][x].setName(String.valueOf(x + ";" + y));
@@ -75,11 +75,11 @@ public class GameWindow extends Window
 				gameField[y][x].setFont(FinalValues.DEFAULT_FONT);
 				gameField[y][x].addActionListener(e -> buttonEvent(e));
 				content.add(gameField[y][x], getGBC(x, y));
-			} 
+			}
 		}
 		field.setGameField(gameField);
 	}
-	
+
 	private void buttonEvent(ActionEvent e)
 	{
 		String point = ((JButton)e.getSource()).getName();
@@ -88,17 +88,17 @@ public class GameWindow extends Window
 			field.capPoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
 		}
 	}
-	
-	private void generateMenu() 
+
+	private void generateMenu()
 	{
 		String[] menu = { "Game options", "Player options", "About", "Debug"};
 		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize", "Bigger points"};
 		if(this.isResizable())
 			menuItems[10] = "Allow resize ✓";
 		mac = new JMenuCreator(menu, menuItems);
-		for (int i = 0; i < mac.getMenuItem().length; i++) 
+		for (int i = 0; i < mac.getMenuItem().length; i++)
 		{
-			switch (mac.getMenuItem()[i].getName()) 
+			switch (mac.getMenuItem()[i].getName())
 			{
 			case "Exit 🚪" -> mac.getMenuItem()[i].addActionListener(event -> System.exit(0));
 			case "Customization" -> mac.getMenuItem()[i].addActionListener(event -> new PlayerSettings(field));
@@ -108,16 +108,16 @@ public class GameWindow extends Window
 				int fields = field.getSizeX() * field.getSizeY();
 				if(about != null)
 					about.dispose();
-				about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n" 
-						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n" 
+				about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n"
+						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
 						+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
-			}); 
-			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 1000, 400, FinalValues.LICENSE));
+			});
+			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> DialogHelper.textAreaDialog(FinalValues.LICENSE, "LICENSE"));// new ErrorWindow("LICENSE", 1000, 400, FinalValues.LICENSE));
 			case "How to play" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
 			case "Allow resize" -> mac.getMenuItem()[i].addActionListener(event -> {
 				this.setResizable(true);
 				((JMenuItem)event.getSource()).setText("Allow resize ✓");
-			}); 
+			});
 			case "Bigger points" -> mac.getMenuItem()[i].addActionListener(event -> {
 				JMenuItem item = (JMenuItem)event.getSource();
 				int size = 60;
@@ -131,29 +131,29 @@ public class GameWindow extends Window
 					item.setText("Bigger points");
 				}
 				JButton[][] gameField = field.getField();
-				for (int y = 0; y < gameField.length; y++) 
+				for (int y = 0; y < gameField.length; y++)
 				{
-					for (int x = 0; x < gameField[0].length; x++) 
+					for (int x = 0; x < gameField[0].length; x++)
 					{
 						gameField[y][x].setPreferredSize(new Dimension(size, size));
-					} 
+					}
 				}
 				field.setGameField(gameField);
 				redraw();
-			}); 
-			} 
+			});
+			}
 		}
 		this.setJMenuBar(mac.getJMenuBar());
 	}
-	
+
 	public void redraw()
 	{
 		this.repaint();
 		getPane().revalidate();
 		this.pack();
 	}
-	
-	private void resize() 
+
+	private void resize()
 	{
 		new GameSettings(new Point(this.getX(), this.getY()));
 		this.dispose();
