@@ -11,14 +11,13 @@ import javax.swing.JPanel;
 import structures.GameField;
 import structures.Player;
 import structures.TEAM;
-import utils.DialogHelper;
 import utils.FinalValues;
 import utils.JMenuCreator;
 
 /**
  *
  * @author Riyufuchi
- * @version 1.9
+ * @version 1.10
  * @since 1.0
  */
 public class GameWindow extends Window
@@ -89,6 +88,8 @@ public class GameWindow extends Window
 		}
 	}
 
+	//TODO: Add license.txt into jar and load it
+	//TODO: Update generation of menu to use newer way, rather then deprecated methods
 	private void generateMenu()
 	{
 		String[] menu = { "Game options", "Player options", "About", "Debug"};
@@ -112,7 +113,7 @@ public class GameWindow extends Window
 						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
 						+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
 			});
-			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> DialogHelper.textAreaDialog(FinalValues.LICENSE, "LICENSE"));// new ErrorWindow("LICENSE", 1000, 400, FinalValues.LICENSE));
+			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 1000, 430, FinalValues.LICENSE));
 			case "How to play" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
 			case "Allow resize" -> mac.getMenuItem()[i].addActionListener(event -> {
 				this.setResizable(true);

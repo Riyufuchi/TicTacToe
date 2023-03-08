@@ -7,7 +7,7 @@ import javax.swing.JTextArea;
 
 /**
  * Created On: 17.07.2022<br>
- * Last Edit: 07.10.2022
+ * Last Edit: 07.03.2023
  */
 public class DialogHelper 
 {
@@ -33,9 +33,9 @@ public class DialogHelper
 	
 	public static void textAreaDialog(String text, String title)
 	{
-		JTextArea pozice = FactoryComponent.newTextArea(text);
-		pozice.setBounds(0, 0, 300, 50);
-		final JComponent[] inputs = new JComponent[] { pozice };
+		JTextArea textArea = FactoryComponent.newTextArea(text);
+		textArea.setBounds(0, 0, 300, 50);
+		final JComponent[] inputs = { textArea };
 		JOptionPane.showMessageDialog(null, inputs, title, JOptionPane.PLAIN_MESSAGE);
 	}
 }

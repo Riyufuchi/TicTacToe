@@ -10,6 +10,8 @@
   </tr>
 </table>
 
+<hr>
+
 * <a target="_blank" rel="noopener noreferrer" href="https://github.com/Riyufuchi/TicTacToe/releases">Download</a>
   * Note: There is no autoupdater, new version must be downloaded manually 
 * You can support me on KoFi (or check out my other stuff there): <br>

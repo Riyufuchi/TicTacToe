@@ -18,8 +18,8 @@ import utils.JMenuCreator;
  * @version 1.8
  * @since 1.0
  */
-public class GameSettings extends Window {
-
+public class GameSettings extends Window
+{
 	private static final long serialVersionUID = 1L;
 	private JButton[] buttons;
 	private JTextField[] texts;
