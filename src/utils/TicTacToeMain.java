@@ -1,10 +1,8 @@
 package utils;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import forms.GameSettings;
+import sufuSoft.sufuLib.enums.AppThemeUI;
+import sufuSoft.sufuLib.gui.utils.CustomizeUI;
 
 /**
  * @author Riyufuchi
@@ -16,23 +14,7 @@ public class TicTacToeMain
 	 */
 	public static void main(String[] args)
 	{
-		try {
-			setNimbusTheme();
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-			FactoryComponent.errorDialog(null, e.getMessage(), e.getClass().getSimpleName());
-		}
+		CustomizeUI.setUI(AppThemeUI.NIMBUS);
 		new GameSettings();
-	}
-	
-	private static void setNimbusTheme() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
-	{
-		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-		{
-			if ("Nimbus".equals(info.getName()))
-			{
-				UIManager.setLookAndFeel(info.getClassName());
-				break;
-			}
-		}
 	}
 }

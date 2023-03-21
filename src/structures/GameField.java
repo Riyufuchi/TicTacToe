@@ -4,12 +4,12 @@ import java.awt.Point;
 
 import javax.swing.JButton;
 
-import forms.ErrorWindow;
+import sufuSoft.sufuLib.gui.ErrorWindow;
 import utils.FinalValues;
 
 /**
  * @author Riyufuchi
- * @version 1.2.6
+ * @version 1.2.7
  * @since 1.3.3
  */
 public class GameField 

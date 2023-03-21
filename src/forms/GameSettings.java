@@ -8,14 +8,16 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import utils.DialogHelper;
-import utils.FactoryComponent;
+import sufuSoft.sufuLib.gui.DialogHelper;
+import sufuSoft.sufuLib.gui.ErrorWindow;
+import sufuSoft.sufuLib.gui.Window;
+import sufuSoft.sufuLib.gui.utils.FactoryComponent;
+import sufuSoft.sufuLib.gui.utils.JMenuCreator;
 import utils.FinalValues;
-import utils.JMenuCreator;
 
 /**
  * @author Riyufuchi
- * @version 1.8
+ * @version 1.9
  * @since 1.0
  */
 public class GameSettings extends Window
@@ -169,5 +171,4 @@ public class GameSettings extends Window
 					"Win row must fit into the field, please select a bigger field size or smaler win row.");
 		}
 	}
-
 }

@@ -11,13 +11,15 @@ import javax.swing.JPanel;
 import structures.GameField;
 import structures.Player;
 import structures.TEAM;
+import sufuSoft.sufuLib.gui.ErrorWindow;
+import sufuSoft.sufuLib.gui.Window;
+import sufuSoft.sufuLib.gui.utils.JMenuCreator;
 import utils.FinalValues;
-import utils.JMenuCreator;
 
 /**
  *
  * @author Riyufuchi
- * @version 1.10
+ * @version 1.11
  * @since 1.0
  */
 public class GameWindow extends Window

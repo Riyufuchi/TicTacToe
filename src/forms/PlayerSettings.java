@@ -13,13 +13,15 @@ import javax.swing.JTextField;
 
 import structures.GameField;
 import structures.Player;
-import utils.FactoryComponent;
+import sufuSoft.sufuLib.gui.ErrorWindow;
+import sufuSoft.sufuLib.gui.Window;
+import sufuSoft.sufuLib.gui.utils.FactoryComponent;
 import utils.FinalValues;
 
 /**
- * 
+ 
  * @author Riyufuchi
- * @version 1.5
+ * @version 1.6
  * @since 1.0 - but really implemented in version 1.3.5
  */
 public class PlayerSettings extends Window
