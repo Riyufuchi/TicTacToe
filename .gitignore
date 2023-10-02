@@ -2,12 +2,17 @@
 *.class
 
 # Files
+*.txt
+*.dat
+
+# Folders
 .settings/
 .classpath
 javadoc.xml
 .project
 oldVersions
 javaBin/
+libs/
 
 # Log file
 *.log

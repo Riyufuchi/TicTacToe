@@ -22,7 +22,7 @@ public class FinalValues
 	public static final String[] SETTINGS_BUTTONS_TEXTS = {"Cancel", "Start game"};
 	//Misc
 	public static final String GAME_TITTLE = "TicTacToe - " + FinalValues.VERSION;
-	public static final String VERSION = "2.8";
+	public static final String VERSION = "3.0";
 	public static final String HOW_TO_PLAY = "Players take turns.\nFirst player that make line (horizontally, vertically or diagonally) of his team symbol wins.";
 	public static final String LICENSE = "Copyright © 2021 - 2023 Riyufuchi\n\n" + 
 			"This licence is only aplicable for code with my copyright header and not for 3rd party libraries.\n" + 

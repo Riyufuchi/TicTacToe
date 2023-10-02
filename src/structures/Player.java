@@ -1,21 +1,32 @@
 package structures;
 
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Player 
+public class Player implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private String name;
-	private TEAM team;
+	private String teamSymbol;
+	private Color teamColor;
 
 	public Player(String name, TEAM team)
 	{
 		this.name = name;
-		this.team = team;
+		this.teamSymbol = team.teamSymbol;
+		this.teamColor = team.teamColor;
+	}
+	
+	public Player(String name, String teamSymbol, Color teamColor)
+	{
+		this.name = name;
+		this.teamSymbol = teamSymbol;
+		this.teamColor = teamColor;
 	}
 
 	public void setColor(Color color)
 	{
-		this.team.teamColor = color;
+		this.teamColor = color;
 	}
 
 	public void setName(String name)
@@ -23,14 +34,14 @@ public class Player
 		this.name = name;
 	}
 
-	public TEAM getTeam()
+	public void setTeamSymbol(String teamSymbol)
 	{
-		return team;
+		this.teamSymbol = teamSymbol;
 	}
 
 	public String getTeamSymbol()
 	{
-		return team.teamSymbol;
+		return teamSymbol;
 	}
 
 	public String getName()
@@ -40,11 +51,12 @@ public class Player
 
 	public Color getTeamColor()
 	{
-		return this.team.teamColor;
+		return teamColor;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return name;
 	}
 }

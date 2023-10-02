@@ -1,164 +1,190 @@
 package forms;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import riyufuchi.sufuLib.config.CustomizeUI;
+import riyufuchi.sufuLib.gui.SufuMessageDialog;
+import riyufuchi.sufuLib.gui.SufuWindow;
+import riyufuchi.sufuLib.lib.Lib;
+import riyufuchi.sufuLib.utils.gui.SufuDialogHelper;
+import riyufuchi.sufuLib.utils.gui.SufuMenuCreator;
 import structures.GameField;
 import structures.Player;
+import structures.Settings;
 import structures.TEAM;
-import sufuSoft.sufuLib.gui.ErrorWindow;
-import sufuSoft.sufuLib.gui.Window;
-import sufuSoft.sufuLib.gui.utils.JMenuCreator;
 import utils.FinalValues;
 
 /**
- *
  * @author Riyufuchi
- * @version 1.11
+ * @version 2.5
  * @since 1.0
  */
-public class GameWindow extends Window
+public class GameWindow extends SufuWindow
 {
 	private static final long serialVersionUID = 1L;
 	private GameField field;
-	private ErrorWindow about;
-	private JMenuCreator mac;
-	private Player[] players;
-
-	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames) {
-		super(FinalValues.GAME_TITTLE, 600, 600, false, true, true);
-		if(sizeY > 16)
-			this.setResizable(true);
-		this.players = new Player[playerNames.length];
-		TEAM[] teams = TEAM.values();
-		for(int i = 0; i < players.length; i++)
-			this.players[i] = new Player(playerNames[i], teams[i + 1]);
-		this.field = new GameField(players, winRow, sizeX, sizeY);
-		this.setLocation(new Point(180, 80));
-		initGameWindow();
-	}
+	private SufuMenuCreator mac;
+	private Player[] loadedPlayers, players;
 
 	public GameWindow(GameField field, Point location)
 	{
-		super(FinalValues.GAME_TITTLE, 800, 600, false, false, true);
+		super(FinalValues.GAME_TITTLE, 600, 600, false, false, true);
 		this.field = field;
-		if(field.getSizeY() > 16)
-			this.setResizable(true);
+		postWindowInit(getPane());
 		this.setLocation(location);
-		initGameWindow();
 	}
-
-	private void initGameWindow()
+	
+	public GameWindow(int sizeX, int sizeY, int winRow, String[] playerNames)
 	{
-		setField(getPane());;
+		super(FinalValues.GAME_TITTLE, 600, 600, false, true, true);
+		createPlayers(playerNames, 0, playerNames.length);
+		this.field = new GameField(players, winRow, sizeX, sizeY, this);
+		postWindowInit(getPane());
 	}
-
+	
+	public GameWindow(int sizeX, int sizeY, int winRow, Player[] players, int numberOfPlayers)
+	{
+		super(FinalValues.GAME_TITTLE, 600, 600, false, true, true);
+		this.loadedPlayers = players;
+		setPlayers(loadedPlayers, numberOfPlayers);
+		this.field = new GameField(this.players, winRow, sizeX, sizeY, this);
+		postWindowInit(getPane());
+	}
+	
 	@Override
-	protected void setComponents(JPanel content) {
+	protected void postWindowInit(JPanel content)
+	{
+		if (field.getSizeY() > 16)
+			this.setResizable(true);
 		generateMenu();
+		field.createGameField(this);
+		redraw();
+		this.setLocationRelativeTo(null);
 	}
-
-	private void setField(JPanel content)
-	{
-		JButton[][] gameField = field.getField();
-		for (int y = 0; y < gameField.length; y++)
-		{
-			for (int x = 0; x < gameField[0].length; x++)
-			{
-				gameField[y][x] = new JButton();
-				gameField[y][x].setName(String.valueOf(x + ";" + y));
-				gameField[y][x].setPreferredSize(new Dimension(60, 60));
-				gameField[y][x].setFont(FinalValues.DEFAULT_FONT);
-				gameField[y][x].addActionListener(e -> buttonEvent(e));
-				content.add(gameField[y][x], getGBC(x, y));
-			}
-		}
-		field.setGameField(gameField);
-	}
-
-	private void buttonEvent(ActionEvent e)
-	{
-		String point = ((JButton)e.getSource()).getName();
-		if(!(point.equals(FinalValues.CAPPED)))
-		{
-			field.capPoint(Integer.valueOf(point.substring(0, point.indexOf(';'))), Integer.valueOf(point.substring(point.indexOf(';') + 1, point.length())));
-		}
-	}
-
-	//TODO: Add license.txt into jar and load it
-	//TODO: Update generation of menu to use newer way, rather then deprecated methods
+	
+	// UTILS
+	
+	//TODO: Add Save & Load game options
 	private void generateMenu()
 	{
 		String[] menu = { "Game options", "Player options", "About", "Debug"};
-		String[] menuItems = { "Resize ❎", "Restart 🔁", "Exit 🚪", "", "Customization", "Statistics", "How to play", "", "Lincense", "", "Allow resize", "Bigger points"};
+		String[] menuItems = {
+				"Resize ❎", "Restart 🔁", "Exit 🚪", "",
+				"Customization", "Theme", "",
+				"License", "How to play", "Statistics", "",
+				"Allow resize", "Bigger points"};
 		if(this.isResizable())
-			menuItems[10] = "Allow resize ✓";
-		mac = new JMenuCreator(menu, menuItems);
-		for (int i = 0; i < mac.getMenuItem().length; i++)
+			menuItems[11] = "Allow resize ✓";
+		mac = new SufuMenuCreator(menu, menuItems);
+		final int max = mac.getNumberOfMenuItems();
+		for (int i = 0; i < max; i++)
 		{
-			switch (mac.getMenuItem()[i].getName())
+			switch (mac.getItemName(i))
 			{
-			case "Exit 🚪" -> mac.getMenuItem()[i].addActionListener(event -> System.exit(0));
-			case "Customization" -> mac.getMenuItem()[i].addActionListener(event -> new PlayerSettings(field));
-			case "Restart 🔁" -> mac.getMenuItem()[i].addActionListener(event -> field.restart());
-			case "Resize ❎" -> mac.getMenuItem()[i].addActionListener(event -> resize());
-			case "Statistics" -> mac.getMenuItem()[i].addActionListener(event -> {
-				int fields = field.getSizeX() * field.getSizeY();
-				if(about != null)
-					about.dispose();
-				about = new ErrorWindow("Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n"
-						+ (field.getCapped() * 100)/fields + "% of field is currently capped (that is " + field.getCapped() + " out of " + fields + " fields).\n"
-						+ "NOTE: This informations are not updated in real time, you need to reopen this again for it to update.");
-			});
-			case "Lincense" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("LICENSE", 1000, 430, FinalValues.LICENSE));
-			case "How to play" -> mac.getMenuItem()[i].addActionListener(event -> new ErrorWindow("How to play", FinalValues.HOW_TO_PLAY));
-			case "Allow resize" -> mac.getMenuItem()[i].addActionListener(event -> {
-				this.setResizable(true);
-				((JMenuItem)event.getSource()).setText("Allow resize ✓");
-			});
-			case "Bigger points" -> mac.getMenuItem()[i].addActionListener(event -> {
-				JMenuItem item = (JMenuItem)event.getSource();
-				int size = 60;
-				if(item.getText().equals("Bigger points"))
-				{
-					item.setText("Bigger points ✓");
-					size = 70;
-				}
-				else
-				{
-					item.setText("Bigger points");
-				}
-				JButton[][] gameField = field.getField();
-				for (int y = 0; y < gameField.length; y++)
-				{
-					for (int x = 0; x < gameField[0].length; x++)
+				// Section 1
+				case "Exit 🚪" -> mac.setItemAction(i, event -> System.exit(0));
+				case "Restart 🔁" -> mac.setItemAction(i, event -> field.restart());
+				case "Resize ❎" -> mac.setItemAction(i, event -> new GameSettings(this, e -> resize(e)).showDialog());
+				// Section 2
+				case "Customization" -> mac.setItemAction(i, event -> new PlayerSettings(field).showDialog());
+				case "Theme" -> mac.setItemAction(i, evt -> {
+					if (CustomizeUI.changeTheme(this))
+						SufuDialogHelper.informationDialog(this, "This action require application restart.", "Theme change");
+				});
+				// Section 3
+				case "License" -> mac.setItemAction(i, event -> Lib.licenseGUI(this));//new SufuMessageDialog(this, "LICENSE", 1000, 430, FinalValues.LICENSE));
+				case "How to play" -> mac.setItemAction(i, event -> new SufuMessageDialog(this, "How to play", FinalValues.HOW_TO_PLAY).showDialog());
+				case "Statistics" -> mac.setItemAction(i, event -> {
+					int fields = field.getSizeX() * field.getSizeY();
+					new SufuMessageDialog(this, "Statistics", "Field size: " + field.getSizeX() + "x" + field.getSizeY() + " = " + fields + " fields.\n"
+							+ (field.getCapped() * 100)/fields + "% of field is currently capped (" + field.getCapped() + " out of " + fields + " fields).\n"
+							+ "NOTE: These informations are not updated in real time.").showDialog();;
+				});
+				// Section 4
+				case "Allow resize" -> mac.setItemAction(i, event -> {
+					this.setResizable(true);
+					((JMenuItem)event.getSource()).setText("Allow resize ✓");
+				});
+				case "Bigger points" -> mac.setItemAction(i, event -> {
+					JMenuItem item = (JMenuItem)event.getSource();
+					int size = 60;
+					if(item.getText().equals("Bigger points"))
 					{
-						gameField[y][x].setPreferredSize(new Dimension(size, size));
+						item.setText("Bigger points ✓");
+						size = 70;
 					}
-				}
-				field.setGameField(gameField);
-				redraw();
-			});
+					else
+					{
+						item.setText("Bigger points");
+					}
+					field.resizePoints(size);
+					redraw();
+					});
+				// Default
+				default -> mac.setItemAction(i, event -> SufuDialogHelper.informationDialog(this, "This functionality haven't been implemented yet.", "Info"));
 			}
 		}
 		this.setJMenuBar(mac.getJMenuBar());
 	}
-
+	
 	public void redraw()
 	{
 		this.repaint();
 		getPane().revalidate();
 		this.pack();
 	}
-
-	private void resize()
+	
+	private void createPlayers(String[] playerNames, int numOfJoinedPlayers, int numberOfPlayers)
 	{
-		new GameSettings(new Point(this.getX(), this.getY()));
-		this.dispose();
+		if (players == null)
+			players = new Player[numberOfPlayers];
+		if (playerNames == null)
+			playerNames = FinalValues.DEFAULT_PLAYER_NAMES;
+		TEAM[] teams = TEAM.values();
+		for (int i = numOfJoinedPlayers; i < numberOfPlayers; i++)
+			players[i] = new Player(playerNames[i], teams[i + 1]);
+	}
+	
+	// SETTERS
+	
+	@Override
+	protected void setComponents(JPanel content)
+	{
+	}
+	
+	/**
+	 * Set players from array and generates players that wasn't passed in array 
+	 * 
+	 * @param players
+	 * @param numberOfPlayers
+	 */
+	public void setPlayers(Player[] players, int numberOfPlayers)
+	{
+		int playersNum = 0;
+		if (numberOfPlayers >= players.length)
+			playersNum = players.length;
+		else
+			playersNum = numberOfPlayers;
+		this.players = new Player[numberOfPlayers];
+		for (int i = 0; i < playersNum; i++)
+		{
+			this.players[i] = players[i];
+		}
+		if (players.length != numberOfPlayers)
+			createPlayers(null, players.length, numberOfPlayers);
+	}
+	
+	// DELAGATIONS
+	
+	private void resize(Settings s)
+	{
+		getPane().removeAll();
+		setPlayers(s.players(), s.numberOfPlyers());
+		field = new GameField(players, s.winRow(), s.width(), s.height(), this);
+		field.createGameField(this);
+		redraw();
 	}
 }
